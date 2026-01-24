@@ -1,4 +1,4 @@
-# 🏆 EY Techathon 2025 - LoanKit AI Platform
+# 🏆 LoanKitTechathon 2025 - LoanKit AI Platform
 
 [![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
 [![React](https://img.shields.io/badge/React-18-blue.svg)](https://reactjs.org/)
@@ -61,7 +61,7 @@ Traditional loan processes are slow, paper-heavy, and have 60-70% drop-off rates
 ### What Makes This Special?
 
 - 🤖 **True Agentic AI**: Not just a chatbot - intelligent agents that make decisions
-- ⚡ **Instant Decisions**: Complete loan journey in ONE chat session
+- ⚡ **Instant Decisions**: Complete loan journLoanKitin ONE chat session
 - 📊 **Explainable AI**: Every decision has clear, transparent reasoning
 - 🏢 **Production Ready**: Enterprise-grade architecture and BFSI-compliant UI
 - 📈 **Real Impact**: 40-60% improvement in conversion rates for NBFCs
@@ -148,7 +148,7 @@ Three pre-configured profiles to showcase different outcomes:
 4. Watch AI agents work
 5. Download sanction letter (if approved)
 
-## ✨ Key Features
+## ✨ KLoanKitFeatures
 
 ### 🤖 AI & Intelligence
 - ✅ Natural language understanding with Gemini AI
@@ -196,7 +196,7 @@ Three pre-configured profiles to showcase different outcomes:
 - **Fair (650-699)**: 14.5% p.a.
 - **Poor (<650)**: 16.0% p.a.
 
-## 🎯 User Journey Flow
+## 🎯 User JournLoanKitFlow
 
 ```
 Landing Page
@@ -265,7 +265,7 @@ DECISION: Approve/Reject with explanation
 - ⚡ **Time to Yes**: 5 minutes vs 5 days
 - 📊 **Data Insights**: Real-time analytics on conversion patterns
 
-## 🏅 Why This Wins EY Techathon
+## 🏅 Why This Wins LoanKitTechathon
 
 ### Innovation (25%)
 - ✅ Novel multi-agent orchestration (not just a chatbot)
@@ -312,7 +312,7 @@ DECISION: Approve/Reject with explanation
 
 ## 🤝 Contributing & Contact
 
-**Built for:** EY Techathon 2025 - BFSI Track  
+**Built for:** LoanKitTechathon 2025 - BFSI Track  
 **Team:** [Your Team Name]  
 **Contact:** [Your Email]
 
@@ -333,7 +333,7 @@ MIT License - see [LICENSE](LICENSE) file for details
 
 **Powered by:** Google Gemini AI | React | Node.js  
 **Made in:** India 🇮🇳  
-**For:** EY Techathon 2025
+**For:** LoanKitTechathon 2025
 
 [Demo](http://localhost:5173) • [Documentation](QUICKSTART.md) • [Architecture](ARCHITECTURE.md)
 

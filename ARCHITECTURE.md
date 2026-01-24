@@ -290,7 +290,7 @@ Constraints: Factual, professional tone
 
 ## Security Considerations
 
-### API Key Protection
+### API KLoanKitProtection
 - Stored in `.env` file (never committed)
 - Accessed via `process.env.GEMINI_API_KEY`
 - Not exposed to frontend
@@ -364,4 +364,4 @@ Constraints: Factual, professional tone
 
 ---
 
-**Built for EY Techathon 2025 - BFSI Track**
+**Built for LoanKitTechathon 2025 - BFSI Track**

@@ -1,4 +1,4 @@
-# 📋 Project Summary - EY Techathon Submission
+# 📋 Project Summary - LoanKitTechathon Submission
 
 ## 🎯 Project Title
 **Agentic AI Personal Loan Platform for NBFCs**
@@ -10,7 +10,7 @@
 
 ## 📝 Executive Summary
 
-We've built an enterprise-grade, production-ready Agentic AI platform that revolutionizes personal loan acquisition and conversion for NBFCs. The solution uses a Master AI Agent orchestrating 4 specialized Worker Agents to complete the entire loan journey within a single conversational session - from lead capture to sanction letter generation.
+We've built an enterprise-grade, production-ready Agentic AI platform that revolutionizes personal loan acquisition and conversion for NBFCs. The solution uses a Master AI Agent orchestrating 4 specialized Worker Agents to complete the entire loan journLoanKitwithin a single conversational session - from lead capture to sanction letter generation.
 
 ## 🎨 Problem Statement
 
@@ -37,7 +37,7 @@ Traditional NBFC loan processes suffer from:
 3. **Underwriting Agent** - Real-time credit assessment
 4. **Sanction Letter Generator** - Automated PDF generation
 
-### Key Differentiators
+### KLoanKitDifferentiators
 
 ✅ **True Agentic AI** - Not just a chatbot; intelligent agents make decisions
 ✅ **Instant Decisions** - 3-5 minutes vs 3-5 days
@@ -160,7 +160,7 @@ ELSE: REJECT
 
 ## 🔒 Security & Compliance
 
-- **API Key Management:** Secured via environment variables
+- **API KLoanKitManagement:** Secured via environment variables
 - **CORS Protection:** Whitelist-based origin checking
 - **Input Validation:** Sanitized user inputs
 - **Session Management:** Secure session handling
@@ -268,7 +268,7 @@ ELSE: REJECT
 
 ## 📜 License & Credits
 
-- **Built for:** EY Techathon 2025 - BFSI Track
+- **Built for:** LoanKitTechathon 2025 - BFSI Track
 - **Technology:** Powered by Google Gemini AI
 - **License:** MIT (modify as needed)
 - **Open Source:** Available for evaluation and collaboration

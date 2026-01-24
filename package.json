@@ -10,7 +10,7 @@
     "start": "npm run dev"
   },
   "keywords": ["ai", "loans", "fintech", "agentic-ai"],
-  "author": "EY Techathon Team",
+  "author": "LoanKitTechathon Team",
   "license": "MIT",
   "devDependencies": {
     "concurrently": "^8.2.2"

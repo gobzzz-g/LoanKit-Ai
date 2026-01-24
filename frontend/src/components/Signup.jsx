@@ -130,7 +130,7 @@ const Signup = ({ onSignupSuccess, onSwitchToLogin }) => {
             <UserPlus className="w-8 h-8 text-white" />
           </div>
           <h1 className="text-3xl font-bold text-primary-900 mb-2">Create Account</h1>
-          <p className="text-gray-600">Start your loan journey in minutes</p>
+          <p className="text-gray-600">Start your loan journLoanKitin minutes</p>
         </div>
 
         {/* Signup Form */}

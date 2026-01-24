@@ -259,7 +259,7 @@ I can see you're pre-approved for loans up to ₹${customer.preApprovedLimit.toL
     }
 
     // If no customer ID or phone found, ask for it
-    return `Hello! Welcome to our personal loan platform. 👋 I'm your AI loan Approver, here to make your loan journey smooth and instant.
+    return `Hello! Welcome to our personal loan platform. 👋 I'm your AI loan Approver, here to make your loan journLoanKitsmooth and instant.
 
 To get started, could you please provide your registered mobile number or customer ID?`;
   }

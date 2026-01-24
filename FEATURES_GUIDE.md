@@ -203,7 +203,7 @@ EMI Includes:
 
 ---
 
-## 📊 KEY FEATURES VISIBLE
+## 📊 KLoanKitFEATURES VISIBLE
 
 ✅ **Authentication System**
 - Login page (first screen)
@@ -268,7 +268,7 @@ EMI Includes:
 
 ---
 
-## 🎯 WHAT TO TELL EY TECHATHON JUDGES
+## 🎯 WHAT TO TELL LoanKitTECHATHON JUDGES
 
 **"Our system features:**
 1. **Secure Authentication** - Bank-grade user management

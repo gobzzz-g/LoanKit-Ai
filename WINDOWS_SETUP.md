@@ -18,7 +18,7 @@
    - Visit: https://makersuite.google.com/app/apikey
    - Sign in with Google account
    - Click "Create API Key"
-   - Copy the key (you'll need it later)
+   - Copy the kLoanKit(you'll need it later)
 
 3. **Install Git (Optional but recommended)**
    - Download from: https://git-scm.com/download/win
@@ -29,7 +29,7 @@
 #### Method 1: Automated Setup (Recommended)
 
 1. **Open PowerShell in project folder**
-   - Navigate to: `C:\Users\gobin\OneDrive\Pictures\EY - Phase Two`
+   - Navigate to: `C:\Users\gobin\OneDrive\Pictures\LoanKit- Phase Two`
    - Right-click and select "Open in Terminal" or "Open PowerShell window here"
 
 2. **Run setup script**
@@ -38,7 +38,7 @@
    ```
 
 3. **Follow prompts**
-   - Enter your Gemini API key when asked
+   - Enter your Gemini API kLoanKitwhen asked
    - Wait for dependencies to install
    - Setup will complete automatically
 
@@ -48,7 +48,7 @@
 
 1. **Open PowerShell in backend folder**
    ```powershell
-   cd "C:\Users\gobin\OneDrive\Pictures\EY - Phase Two\backend"
+   cd "C:\Users\gobin\OneDrive\Pictures\LoanKit- Phase Two\backend"
    ```
 
 2. **Install dependencies**
@@ -71,7 +71,7 @@
 
 1. **Open NEW PowerShell window**
    ```powershell
-   cd "C:\Users\gobin\OneDrive\Pictures\EY - Phase Two\frontend"
+   cd "C:\Users\gobin\OneDrive\Pictures\LoanKit- Phase Two\frontend"
    ```
 
 2. **Install dependencies**
@@ -90,7 +90,7 @@
 
 1. **In backend PowerShell terminal:**
    ```powershell
-   cd "C:\Users\gobin\OneDrive\Pictures\EY - Phase Two\backend"
+   cd "C:\Users\gobin\OneDrive\Pictures\LoanKit- Phase Two\backend"
    npm run dev
    ```
 
@@ -105,7 +105,7 @@
 
 1. **In frontend PowerShell terminal (NEW window):**
    ```powershell
-   cd "C:\Users\gobin\OneDrive\Pictures\EY - Phase Two\frontend"
+   cd "C:\Users\gobin\OneDrive\Pictures\LoanKit- Phase Two\frontend"
    npm run dev
    ```
 
@@ -213,7 +213,7 @@ Failed to generate AI response
 ```
 
 **Solution:**
-1. Verify API key in `.env` file
+1. Verify API kLoanKitin `.env` file
 2. Check if you have API quota
 3. Ensure billing is enabled in Google Cloud (if required)
 4. Test API key: https://aistudio.google.com/
@@ -249,7 +249,7 @@ Failed to generate AI response
 3. **File paths**
    - Use quotes for paths with spaces:
    ```powershell
-   cd "C:\Users\gobin\OneDrive\Pictures\EY - Phase Two"
+   cd "C:\Users\gobin\OneDrive\Pictures\LoanKit- Phase Two"
    ```
 
 4. **Antivirus interference**
@@ -297,7 +297,7 @@ npm install
 ### Folder Structure (Windows Explorer)
 
 ```
-📁 EY - Phase Two
+📁 LoanKit- Phase Two
 ├── 📁 backend
 │   ├── 📁 agents
 │   ├── 📁 routes
@@ -354,4 +354,4 @@ For visual learners, consider recording a screen capture showing:
 4. Opening browser
 5. Testing a demo scenario
 
-**Good luck with your EY Techathon demo! 🏆**
+**Good luck with your LoanKitTechathon demo! 🏆**

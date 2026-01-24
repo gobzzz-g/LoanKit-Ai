@@ -9,7 +9,7 @@
     "dev": "nodemon server.js"
   },
   "keywords": ["ai", "agents", "nbfc", "loans", "gemini"],
-  "author": "EY Techathon Team",
+  "author": "LoanKitTechathon Team",
   "license": "MIT",
   "dependencies": {
     "express": "^4.18.2",

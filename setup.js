@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Setup Script for EY Techathon Project
+ * Setup Script for LoanKitTechathon Project
  * Automates environment setup and dependency installation
  */
 
@@ -35,7 +35,7 @@ function execCommand(command, cwd = __dirname) {
 }
 
 async function setup() {
-  console.log('🚀 EY Techathon - Agentic AI Setup\n');
+  console.log('🚀 LoanKitTechathon - Agentic AI Setup\n');
   console.log('This script will:');
   console.log('1. Install backend dependencies');
   console.log('2. Install frontend dependencies');
@@ -62,7 +62,7 @@ async function setup() {
   const envPath = path.join(backendPath, '.env');
   if (!fs.existsSync(envPath)) {
     console.log('\n🔑 Setting up backend environment...');
-    const apiKey = await question('Enter your Gemini API Key: ');
+    const apiKLoanKit= await question('Enter your Gemini API Key: ');
     
     const envContent = `PORT=3000
 GEMINI_API_KEY=${apiKey}

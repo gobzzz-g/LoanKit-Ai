@@ -2,12 +2,12 @@
 
 ## Project Overview
 
-This document lists all files created for the EY Techathon Agentic AI Personal Loan Platform.
+This document lists all files created for the LoanKitTechathon Agentic AI Personal Loan Platform.
 
 ## Root Directory
 
 ```
-EY - Phase Two/
+LoanKit- Phase Two/
 │
 ├── 📄 README.md                    # Main project documentation
 ├── 📄 QUICKSTART.md                # Quick setup guide
@@ -157,7 +157,7 @@ EY - Phase Two/
   - agentAPI: Customer data
   - pdfAPI: Document generation
 
-## Key Technologies Used
+## KLoanKitTechnologies Used
 
 ### Backend Stack
 ```json

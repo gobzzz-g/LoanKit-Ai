@@ -28,7 +28,7 @@ Start Command: npm start
 ### Step 4: Add Environment Variable
 Click **"Environment"** tab:
 ```
-GEMINI_API_KEY = your_actual_gemini_key_here
+GEMINI_API_KLoanKit= your_actual_gemini_key_here
 NODE_ENV = production
 ```
 

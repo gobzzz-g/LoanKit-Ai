@@ -33,7 +33,7 @@
 - Clean visual flow
 
 **Caption:**  
-*"Real-time progress tracking shows customers exactly where they are in the loan journey"*
+*"Real-time progress tracking shows customers exactly where thLoanKitare in the loan journey"*
 
 ---
 
@@ -197,7 +197,7 @@
 **Minute 0:00-0:30 - Introduction**
 - Show landing page
 - Explain the problem statement
-- Highlight key features
+- Highlight kLoanKitfeatures
 
 **Minute 0:30-2:00 - Instant Approval Demo**
 - Click Rajesh Kumar
@@ -211,7 +211,7 @@
 - Show architecture diagram
 - Explain Master Agent
 - Explain Worker Agents
-- Show how they communicate
+- Show how thLoanKitcommunicate
 
 **Minute 3:00-4:00 - Rejection Scenario (Quick)**
 - Click Amit Patel
@@ -238,7 +238,7 @@
    - Highlight important elements
 
 3. **Editing:**
-   - Add captions for key points
+   - Add captions for kLoanKitpoints
    - Speed up waiting times
    - Add background music (subtle)
    - Include title and end screens
@@ -254,7 +254,7 @@
 ### Slide 1: Title
 - Project name
 - Team name
-- EY Techathon 2025 logo
+- LoanKitTechathon 2025 logo
 
 ### Slide 2: Problem Statement
 - NBFC challenges
@@ -263,7 +263,7 @@
 
 ### Slide 3: Solution Overview
 - Agentic AI platform
-- Key differentiators
+- KLoanKitdifferentiators
 - Value proposition
 
 ### Slide 4: Architecture
@@ -280,7 +280,7 @@
 - Expected outcomes
 - [Show screenshots]
 
-### Slide 7: Key Features
+### Slide 7: KLoanKitFeatures
 - Bullet points with icons
 - Screenshots of UI
 
@@ -373,7 +373,7 @@ presentation.pptx
 1. **Consistency**: Use same browser, same resolution
 2. **Quality**: High-res screenshots (1920x1080 or higher)
 3. **Annotations**: Add arrows, highlights if needed
-4. **Branding**: Include EY Techathon branding where appropriate
+4. **Branding**: Include LoanKitTechathon branding where appropriate
 5. **Accessibility**: Add alt text for all images
 6. **Compression**: Optimize file sizes for faster loading
 

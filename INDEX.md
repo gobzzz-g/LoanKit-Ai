@@ -55,7 +55,7 @@ backend/
     └── mockData.js           # Mock CRM & credit bureau
 ```
 
-**Key Files to Review:**
+**KLoanKitFiles to Review:**
 - `agents/masterAgent.js` - Core agent logic
 - `services/gemini.js` - AI integration
 
@@ -78,7 +78,7 @@ frontend/
         └── api.js            # API client
 ```
 
-**Key Files to Review:**
+**KLoanKitFiles to Review:**
 - `components/ChatInterface.jsx` - Main chat logic
 - `components/LandingPage.jsx` - Landing page
 
@@ -137,7 +137,7 @@ Quick reference for testing:
 
 ---
 
-## 📊 Key Metrics
+## 📊 KLoanKitMetrics
 
 ### Code
 - **Lines of Code:** 5,200+
@@ -186,7 +186,7 @@ Quick reference for testing:
 | Setup fails | See [WINDOWS_SETUP.md](WINDOWS_SETUP.md) | Troubleshooting section |
 | Backend errors | Check `.env` file | [QUICKSTART.md](QUICKSTART.md) |
 | Frontend blank | Clear cache, refresh | [TESTING_CHECKLIST.md](TESTING_CHECKLIST.md) |
-| API errors | Verify Gemini key | [WINDOWS_SETUP.md](WINDOWS_SETUP.md) |
+| API errors | Verify Gemini kLoanKit| [WINDOWS_SETUP.md](WINDOWS_SETUP.md) |
 | PDF not working | Check backend logs | [ARCHITECTURE.md](ARCHITECTURE.md) |
 
 ---
@@ -300,7 +300,7 @@ Based on your role:
 
 ## 🚀 Ready to Build the Future of NBFC Lending!
 
-**All resources are ready. Let's win EY Techathon 2025!**
+**All resources are ready. Let's win LoanKitTechathon 2025!**
 
 [Start Setup](WINDOWS_SETUP.md) • [View Demo](DEMO_SCRIPT.md) • [Deploy](DEPLOYMENT.md)
 

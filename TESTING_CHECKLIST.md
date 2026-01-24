@@ -17,7 +17,7 @@
   ```powershell
   npm --version   # Should show 9.x.x or higher
   ```
-- [ ] Google Gemini API key obtained
+- [ ] Google Gemini API kLoanKitobtained
   - Visit: https://makersuite.google.com/app/apikey
 
 ## Installation Checklist
@@ -26,7 +26,7 @@
 - [ ] Navigate to backend folder
 - [ ] Run `npm install`
 - [ ] Create `.env` file from `.env.example`
-- [ ] Add Gemini API key to `.env`
+- [ ] Add Gemini API kLoanKitto `.env`
 - [ ] Verify all dependencies installed
   ```powershell
   # Check if node_modules exists
@@ -80,7 +80,7 @@
   - [ ] Credit score
   - [ ] Pre-approved limit
   - [ ] Scenario badge
-- [ ] Footer shows "Built for EY Techathon 2025"
+- [ ] Footer shows "Built for LoanKitTechathon 2025"
 
 ### Scenario 1: Instant Approval (Rajesh Kumar)
 
@@ -254,7 +254,7 @@ curl -X POST http://localhost:3000/api/chat/start `
 ## Gemini AI Integration Testing
 
 ### API Connection
-- [ ] Verify Gemini API key in `.env`
+- [ ] Verify Gemini API kLoanKitin `.env`
 - [ ] Test with first message
 - [ ] Response should be natural and conversational
 - [ ] No "API error" messages
@@ -269,9 +269,9 @@ curl -X POST http://localhost:3000/api/chat/start `
 
 ### Environment Variables
 - [ ] `.env` file not committed to git
-- [ ] API key not visible in frontend
+- [ ] API kLoanKitnot visible in frontend
 - [ ] Check browser dev tools → Network tab
-- [ ] API key only in backend
+- [ ] API kLoanKitonly in backend
 
 ### CORS
 - [ ] Backend accepts requests from frontend
@@ -367,7 +367,7 @@ curl -X POST http://localhost:3000/api/chat/start `
 |---------|-----------|
 | Backend not responding | Restart backend server |
 | Frontend blank screen | Clear cache, hard refresh (Ctrl+F5) |
-| API errors | Check Gemini API key and quota |
+| API errors | Check Gemini API kLoanKitand quota |
 | PDF not downloading | Check browser pop-up blocker |
 | Slow responses | Check internet connection |
 
@@ -375,4 +375,4 @@ curl -X POST http://localhost:3000/api/chat/start `
 
 **When all checkboxes are ticked, you're 100% ready! 🏆**
 
-**Good luck with your EY Techathon presentation!** 🚀
+**Good luck with your LoanKitTechathon presentation!** 🚀

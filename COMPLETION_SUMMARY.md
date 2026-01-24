@@ -50,7 +50,7 @@ A **complete, production-ready, hackathon-winning Agentic AI web application** f
 - `LandingPage.jsx`: Enterprise landing page with demo customers
 - `ChatInterface.jsx`: Conversational chat UI with real-time messaging
 - `MessageBubble.jsx`: Styled chat messages with markdown support
-- `ProgressTracker.jsx`: Visual journey tracker
+- `ProgressTracker.jsx`: Visual journLoanKittracker
 
 ✅ **Services** (`src/services/`)
 - `api.js`: Axios-based API client with organized endpoints
@@ -403,7 +403,7 @@ Run through this quick checklist:
 
 <div align="center">
 
-# 🏆 READY TO WIN EY TECHATHON 2025! 🏆
+# 🏆 READY TO WIN LoanKitTECHATHON 2025! 🏆
 
 **This isn't just a project - it's a product ready to transform NBFC lending.**
 

@@ -19,7 +19,7 @@ async function ensureDataDir() {
   }
 }
 
-// Initialize database files if they don't exist
+// Initialize database files if thLoanKitdon't exist
 async function initializeDB() {
   await ensureDataDir();
   

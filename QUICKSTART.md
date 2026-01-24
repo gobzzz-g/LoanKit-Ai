@@ -4,7 +4,7 @@
 
 - Node.js 18 or higher
 - npm or yarn
-- Google Gemini API Key (get it from [Google AI Studio](https://makersuite.google.com/app/apikey))
+- Google Gemini API KLoanKit(get it from [Google AI Studio](https://makersuite.google.com/app/apikey))
 
 ## Installation Steps
 
@@ -98,7 +98,7 @@ Open your browser and go to: **http://localhost:5173**
 
 ### Backend won't start
 - Check if port 3000 is available
-- Verify Gemini API key is correct
+- Verify Gemini API kLoanKitis correct
 - Run `npm install` again
 
 ### Frontend won't start
@@ -111,14 +111,14 @@ Open your browser and go to: **http://localhost:5173**
 - Verify VITE_API_URL in frontend/.env
 
 ### Gemini API errors
-- Verify API key is valid
+- Verify API kLoanKitis valid
 - Check API quota limits
 - Ensure you have billing enabled (if required)
 
 ## Project Structure
 
 ```
-EY - Phase Two/
+LoanKit- Phase Two/
 ├── backend/
 │   ├── agents/           # AI Agent logic
 │   ├── routes/           # API routes

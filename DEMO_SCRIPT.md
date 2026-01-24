@@ -13,7 +13,7 @@
 
 ## Our Solution (1 minute)
 
-"We've built an **Agentic AI system** where a Master AI Agent orchestrates 4 specialized Worker Agents to complete the entire loan journey in ONE chat session:
+"We've built an **Agentic AI system** where a Master AI Agent orchestrates 4 specialized Worker Agents to complete the entire loan journLoanKitin ONE chat session:
 
 1. **Sales Agent** - Negotiates loan terms intelligently
 2. **Verification Agent** - Validates KYC instantly
@@ -62,12 +62,12 @@ All powered by Google Gemini AI for human-like conversations."
    - "See how the AI explains why - credit score below threshold"
    - "This explainability builds trust"
 
-## Key Differentiators (1 minute)
+## KLoanKitDifferentiators (1 minute)
 
 "What makes this unique:
 
 ✅ **True Agentic AI** - Not just a chatbot, but orchestrated intelligent agents
-✅ **Instant Decisions** - Complete journey in 3-5 minutes vs 3-5 days
+✅ **Instant Decisions** - Complete journLoanKitin 3-5 minutes vs 3-5 days
 ✅ **Explainable AI** - Every decision has clear reasoning
 ✅ **Production Ready** - Enterprise-grade UI, secure, scalable architecture
 ✅ **Real Business Impact** - Can increase NBFC conversion rates by 40-60%"

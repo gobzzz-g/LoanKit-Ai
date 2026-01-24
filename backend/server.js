@@ -29,6 +29,21 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Root route
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'LoanKit AI Backend API',
+    status: 'running',
+    endpoints: {
+      health: '/health',
+      auth: '/api/auth/*',
+      chat: '/api/chat/*',
+      agents: '/api/agents/*',
+      pdf: '/api/pdf/*'
+    }
+  });
+});
+
 // Routes
 app.use('/api/auth', authRouter);
 app.use('/api/chat', chatRouter);

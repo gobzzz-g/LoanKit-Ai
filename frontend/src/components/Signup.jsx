@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { UserPlus, User, Mail, Phone, Lock, ArrowRight, CheckCircle } from 'lucide-react';
+import { authAPI } from '../services/api';
 
 const Signup = ({ onSignupSuccess, onSwitchToLogin }) => {
   const [formData, setFormData] = useState({
@@ -84,18 +85,12 @@ const Signup = ({ onSignupSuccess, onSwitchToLogin }) => {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:3000/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          mobile: formData.mobile.replace(/[\s\-\+]/g, ''),
-          password: formData.password
-        })
+      const data = await authAPI.register({
+        name: formData.name,
+        email: formData.email,
+        mobile: formData.mobile.replace(/[\s\-\+]/g, ''),
+        password: formData.password
       });
-
-      const data = await response.json();
 
       if (data.success) {
         onSignupSuccess(data.user);
@@ -104,7 +99,7 @@ const Signup = ({ onSignupSuccess, onSwitchToLogin }) => {
       }
     } catch (err) {
       console.error('Signup error:', err);
-      setError('Failed to connect to server');
+      setError('Failed to connect to server. Backend may be starting up...');
     } finally {
       setLoading(false);
     }

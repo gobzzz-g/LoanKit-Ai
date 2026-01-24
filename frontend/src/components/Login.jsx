@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { LogIn, Mail, Phone, Lock, ArrowRight } from 'lucide-react';
+import { authAPI } from '../services/api';
 
 const Login = ({ onLoginSuccess, onSwitchToSignup }) => {
   const [formData, setFormData] = useState({
@@ -23,13 +24,7 @@ const Login = ({ onLoginSuccess, onSwitchToSignup }) => {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:3000/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
-
-      const data = await response.json();
+      const data = await authAPI.login(formData);
 
       if (data.success) {
         // Store session token
@@ -41,7 +36,7 @@ const Login = ({ onLoginSuccess, onSwitchToSignup }) => {
       }
     } catch (err) {
       console.error('Login error:', err);
-      setError('Failed to connect to server');
+      setError('Failed to connect to server. Backend may be starting up...');
     } finally {
       setLoading(false);
     }

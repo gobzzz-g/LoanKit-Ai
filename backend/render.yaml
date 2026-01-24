@@ -1,0 +1,14 @@
+# Render.com Build Configuration
+# This file tells Render how to build and run your backend
+
+# Build Command (run during deployment)
+build:
+  - npm install
+
+# Start Command (run to start the server)
+start:
+  - npm start
+
+# Environment Variables Required:
+# GEMINI_API_KEY=your_api_key_here
+# NODE_ENV=production

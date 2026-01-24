@@ -1,0 +1,261 @@
+import { useState, useEffect } from 'react';
+import Login from './components/Login';
+import Signup from './components/Signup';
+import LandingPage from './components/LandingPage';
+import Dashboard from './components/Dashboard';
+import ChatInterface from './components/ChatInterface';
+import './App.css';
+
+function App() {
+  const [authState, setAuthState] = useState('loading'); // loading, login, signup, authenticated
+  const [user, setUser] = useState(null);
+  const [sessionToken, setSessionToken] = useState(null);
+  const [currentView, setCurrentView] = useState('landing'); // landing, dashboard, chat
+  const [sessionStarted, setSessionStarted] = useState(false);
+  const [sessionData, setSessionData] = useState(null);
+
+  // Check for existing session on mount
+  useEffect(() => {
+    const checkSession = async () => {
+      const token = localStorage.getItem('sessionToken');
+
+      if (token) {
+        try {
+          // Verify session with backend and fetch fresh user data
+          const response = await fetch('http://localhost:3000/api/auth/me', {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            // Always use fresh data from server, including updated loan history
+            setUser(data.user);
+            setSessionToken(token);
+            // Update localStorage with fresh data
+            localStorage.setItem('user', JSON.stringify(data.user));
+            setAuthState('authenticated');
+          } else {
+            // Session expired or invalid
+            localStorage.removeItem('sessionToken');
+            localStorage.removeItem('user');
+            setAuthState('login');
+          }
+        } catch (error) {
+          console.error('Session verification failed:', error);
+          localStorage.removeItem('sessionToken');
+          localStorage.removeItem('user');
+          setAuthState('login');
+        }
+      } else {
+        setAuthState('login');
+      }
+    };
+
+    checkSession();
+  }, []);
+
+  const handleLoginSuccess = (userData, token) => {
+    setUser(userData);
+    setSessionToken(token);
+    setAuthState('authenticated');
+  };
+
+  const handleSignupSuccess = (userData) => {
+    // After signup, switch to login
+    setAuthState('login');
+  };
+
+  const handleLogout = async () => {
+    try {
+      await fetch('http://localhost:3000/api/auth/logout', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${sessionToken}`
+        }
+      });
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+
+    // Clear local storage and reset state
+    localStorage.removeItem('sessionToken');
+    localStorage.removeItem('user');
+    setUser(null);
+    setSessionToken(null);
+    setSessionStarted(false);
+    setSessionData(null);
+    setAuthState('login');
+  };
+
+  const handleStartSession = async (data) => {
+    // If no data provided, start fresh conversation
+    if (!data || !data.session) {
+      try {
+        const response = await fetch('http://localhost:3000/api/chat/start', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            customerId: user?.customerId,
+            userName: user?.name
+          })
+        });
+        const result = await response.json();
+        if (result.success) {
+          setSessionData(result);
+          setSessionStarted(true);
+          setCurrentView('chat');
+        } else {
+          console.error('Failed to start session:', result.error);
+          alert('Failed to start chat session. Please try again.');
+        }
+      } catch (error) {
+        console.error('Failed to start session:', error);
+        alert('Failed to connect to server. Please check your connection.');
+      }
+    } else {
+      setSessionData(data);
+      setSessionStarted(true);
+      setCurrentView('chat');
+    }
+  };
+
+  const handleBackToLanding = async () => {
+    // Refresh user data to get latest loan history before going back
+    try {
+      const response = await fetch('http://localhost:3000/api/auth/me', {
+        headers: {
+          'Authorization': `Bearer ${sessionToken}`
+        }
+      });
+      const data = await response.json();
+      if (data.success) {
+        setUser(data.user);
+        localStorage.setItem('user', JSON.stringify(data.user));
+      }
+    } catch (error) {
+      console.error('Failed to refresh user data:', error);
+    }
+    setSessionStarted(false);
+    setSessionData(null);
+    setCurrentView('landing');
+  };
+
+  const handleGoToDashboard = async () => {
+    // Refresh user data to get latest loan history
+    console.log('📂 Opening dashboard, refreshing user data...');
+    try {
+      const response = await fetch('http://localhost:3000/api/auth/me', {
+        headers: {
+          'Authorization': `Bearer ${sessionToken}`
+        }
+      });
+      const data = await response.json();
+      console.log('📊 Dashboard data received:', data);
+      if (data.success) {
+        setUser(data.user);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        console.log('✅ Dashboard showing', data.user?.loanHistory?.length, 'loans');
+      }
+    } catch (error) {
+      console.error('Failed to refresh user data:', error);
+    }
+    setCurrentView('dashboard');
+  };
+
+  const handleBackFromDashboard = () => {
+    setCurrentView('landing');
+  };
+
+  const handleLoanDecision = async (decision) => {
+    // Refresh user data immediately when a loan decision is made
+    console.log('🔄 Refreshing user data after loan decision:', decision);
+    try {
+      const response = await fetch('http://localhost:3000/api/auth/me', {
+        headers: {
+          'Authorization': `Bearer ${sessionToken}`
+        }
+      });
+      const data = await response.json();
+      console.log('📊 Received updated user data:', data);
+      if (data.success) {
+        setUser(data.user);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        console.log('✅ User state updated. Loan history count:', data.user?.loanHistory?.length);
+      }
+    } catch (error) {
+      console.error('❌ Failed to refresh user data after loan decision:', error);
+    }
+  };
+
+  // Loading state
+  if (authState === 'loading') {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 via-white to-blue-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Login page
+  if (authState === 'login') {
+    return (
+      <Login
+        onLoginSuccess={handleLoginSuccess}
+        onSwitchToSignup={() => setAuthState('signup')}
+      />
+    );
+  }
+
+  // Signup page
+  if (authState === 'signup') {
+    return (
+      <Signup
+        onSignupSuccess={handleSignupSuccess}
+        onSwitchToLogin={() => setAuthState('login')}
+      />
+    );
+  }
+
+  // Authenticated - Show Landing, Dashboard, or Chat
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-blue-50">
+      {currentView === 'landing' && (
+        <LandingPage 
+          onStartSession={handleStartSession}
+          onGoToDashboard={handleGoToDashboard}
+          user={user}
+          onLogout={handleLogout}
+        />
+      )}
+      
+      {currentView === 'dashboard' && (
+        <Dashboard
+          user={user}
+          onStartNewApplication={handleStartSession}
+          onBack={handleBackFromDashboard}
+          onViewLoan={(loan) => console.log('View loan:', loan)}
+        />
+      )}
+      
+      {currentView === 'chat' && (
+        <ChatInterface 
+          sessionData={sessionData} 
+          onBack={handleBackToLanding}
+          user={user}
+          sessionToken={sessionToken}
+          onLoanDecision={handleLoanDecision}
+        />
+      )}
+    </div>
+  );
+}
+
+export default App;

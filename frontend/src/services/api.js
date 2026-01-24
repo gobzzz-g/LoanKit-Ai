@@ -7,7 +7,28 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  timeout: 60000, // 60 seconds timeout for sleeping backend to wake up
 });
+
+// Add retry interceptor for when backend is sleeping (Render free tier)
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const config = error.config;
+    
+    // If timeout or network error and haven't retried yet
+    if ((!error.response || error.code === 'ECONNABORTED') && !config._retry) {
+      config._retry = true;
+      console.log('Backend might be sleeping, retrying...');
+      
+      // Wait 3 seconds and retry
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      return api(config);
+    }
+    
+    return Promise.reject(error);
+  }
+);
 
 export const chatAPI = {
   startSession: async (customerId) => {

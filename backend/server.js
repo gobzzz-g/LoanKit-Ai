@@ -3,12 +3,17 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+
+dotenv.config();
+
+console.log('🔍 Starting server...');
+console.log('📂 Current directory:', process.cwd());
+console.log('🔑 GEMINI_API_KEY present:', !!process.env.GEMINI_API_KEY);
+
 import chatRouter from './routes/chat.js';
 import agentRouter from './routes/agents.js';
 import pdfRouter from './routes/pdf.js';
 import authRouter from './routes/auth.js';
-
-dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -69,4 +74,8 @@ app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Server running on port ${PORT}`);
   console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`🤖 Gemini API: ${process.env.GEMINI_API_KEY ? '✅ Configured' : '❌ Missing'}`);
+  console.log(`🌐 Server is ready to accept connections`);
+}).on('error', (err) => {
+  console.error('❌ Server failed to start:', err);
+  process.exit(1);
 });

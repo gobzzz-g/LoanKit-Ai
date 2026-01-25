@@ -22,7 +22,8 @@ app.use(cors({
     'http://localhost:5173', 
     'http://localhost:5174',
     'https://loankit-ai-demo.web.app',
-    'https://loankit-ai-demo.firebaseapp.com'
+    'https://loankit-ai-demo.firebaseapp.com',
+    'https://loankit-ai-production.up.railway.app'
   ],
   credentials: true
 }));
@@ -64,8 +65,8 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Server running on port ${PORT}`);
   console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`🤖 Gemini API: ${process.env.GEMINI_API_KEY ? '✅ Configured' : '❌ Missing'}`);
 });

@@ -22,13 +22,8 @@ function App() {
       if (token) {
         try {
           // Verify session with backend and fetch fresh user data
-          const response = await fetch('http://localhost:3000/api/auth/me', {
-            headers: {
-              'Authorization': `Bearer ${token}`
-            }
-          });
-
-          const data = await response.json();
+          const { authAPI } = await import('./services/api');
+          const data = await authAPI.getCurrentUser(token);
 
           if (data.success) {
             // Always use fresh data from server, including updated loan history
@@ -70,12 +65,8 @@ function App() {
 
   const handleLogout = async () => {
     try {
-      await fetch('http://localhost:3000/api/auth/logout', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${sessionToken}`
-        }
-      });
+      const { authAPI } = await import('./services/api');
+      await authAPI.logout(sessionToken);
     } catch (error) {
       console.error('Logout error:', error);
     }
@@ -94,17 +85,8 @@ function App() {
     // If no data provided, start fresh conversation
     if (!data || !data.session) {
       try {
-        const response = await fetch('http://localhost:3000/api/chat/start', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            customerId: user?.customerId,
-            userName: user?.name
-          })
-        });
-        const result = await response.json();
+        const { chatAPI } = await import('./services/api');
+        const result = await chatAPI.startSession(user?.customerId, user?.name);
         if (result.success) {
           setSessionData(result);
           setSessionStarted(true);
@@ -127,12 +109,8 @@ function App() {
   const handleBackToLanding = async () => {
     // Refresh user data to get latest loan history before going back
     try {
-      const response = await fetch('http://localhost:3000/api/auth/me', {
-        headers: {
-          'Authorization': `Bearer ${sessionToken}`
-        }
-      });
-      const data = await response.json();
+      const { authAPI } = await import('./services/api');
+      const data = await authAPI.getCurrentUser(sessionToken);
       if (data.success) {
         setUser(data.user);
         localStorage.setItem('user', JSON.stringify(data.user));
@@ -149,12 +127,8 @@ function App() {
     // Refresh user data to get latest loan history
     console.log('📂 Opening dashboard, refreshing user data...');
     try {
-      const response = await fetch('http://localhost:3000/api/auth/me', {
-        headers: {
-          'Authorization': `Bearer ${sessionToken}`
-        }
-      });
-      const data = await response.json();
+      const { authAPI } = await import('./services/api');
+      const data = await authAPI.getCurrentUser(sessionToken);
       console.log('📊 Dashboard data received:', data);
       if (data.success) {
         setUser(data.user);
@@ -175,12 +149,8 @@ function App() {
     // Refresh user data immediately when a loan decision is made
     console.log('🔄 Refreshing user data after loan decision:', decision);
     try {
-      const response = await fetch('http://localhost:3000/api/auth/me', {
-        headers: {
-          'Authorization': `Bearer ${sessionToken}`
-        }
-      });
-      const data = await response.json();
+      const { authAPI } = await import('./services/api');
+      const data = await authAPI.getCurrentUser(sessionToken);
       console.log('📊 Received updated user data:', data);
       if (data.success) {
         setUser(data.user);

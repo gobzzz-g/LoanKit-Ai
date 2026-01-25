@@ -7,7 +7,7 @@
     "dev:backend": "cd backend && npm start",
     "dev:frontend": "cd frontend && npm run dev",
     "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install",
-    "start": "npm run dev"
+    "start": "cd backend && npm start"
   },
   "keywords": ["ai", "loans", "fintech", "agentic-ai"],
   "author": "LoanKitTechathon Team",

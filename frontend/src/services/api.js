@@ -31,8 +31,11 @@ api.interceptors.response.use(
 );
 
 export const chatAPI = {
-  startSession: async (customerId) => {
-    const response = await api.post('/chat/start', { customerId });
+  startSession: async (customerId, userName) => {
+    const response = await api.post('/chat/start', { 
+      customerId,
+      userName 
+    });
     return response.data;
   },
   

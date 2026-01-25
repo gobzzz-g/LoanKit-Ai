@@ -213,7 +213,7 @@ const LandingPage = ({ onStartSession, user, onLogout, onGoToDashboard }) => {
 
         {/* Footer Info */}
         <div className="text-center mt-16 text-sm text-gray-500 space-y-2">
-          <p>🏆 Built for LoanKitTechathon 2025 - BFSI Track</p>
+          <p>🏆 LoanKit - BFSI Track</p>
           <p className="font-medium text-gray-600">Powered by LoanKit AI | Agentic AI & Google Gemini</p>
         </div>
       </div>

@@ -364,4 +364,4 @@ Constraints: Factual, professional tone
 
 ---
 
-**Built for LoanKitTechathon 2025 - BFSI Track**
+**LoanKit - BFSI Track**

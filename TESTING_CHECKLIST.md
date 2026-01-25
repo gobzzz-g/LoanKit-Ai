@@ -80,7 +80,7 @@
   - [ ] Credit score
   - [ ] Pre-approved limit
   - [ ] Scenario badge
-- [ ] Footer shows "Built for LoanKitTechathon 2025"
+- [ ] Footer shows "LoanKit"
 
 ### Scenario 1: Instant Approval (Rajesh Kumar)
 

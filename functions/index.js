@@ -1,46 +1,35 @@
-import functions from "firebase-functions";
-import express from "express";
-import cors from "cors";
-import dotenv from "dotenv";
+/**
+ * LoanKit AI - Firebase Cloud Functions
+ * CommonJS syntax for Node.js 18 compatibility
+ */
 
-// Import routes
-import chatRouter from "./routes/chat.js";
-import agentRouter from "./routes/agents.js";
-import pdfRouter from "./routes/pdf.js";
-import authRouter from "./routes/auth.js";
+const functions = require("firebase-functions");
+const express = require("express");
+const cors = require("cors");
+const admin = require("firebase-admin");
 
-dotenv.config();
+// Initialize Firebase Admin
+admin.initializeApp();
 
+// Create Express app
 const app = express();
 
 // Middleware
 app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "http://localhost:5174",
-    "https://loankit-ai-demo.web.app",
-    "https://loankit-ai-demo.firebaseapp.com",
-  ],
+  origin: true, // Allow all origins for development
   credentials: true,
 }));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-// Routes
-app.use("/api/auth", authRouter);
-app.use("/api/chat", chatRouter);
-app.use("/api/agents", agentRouter);
-app.use("/api/pdf", pdfRouter);
-
-// Health check
-app.get("/health", (req, res) => {
-  res.json({status: "healthy", timestamp: new Date().toISOString()});
-});
-
+// Root endpoint
 app.get("/", (req, res) => {
   res.json({
-    status: "LoanKit AI API is running",
+    status: "LoanKit AI API is running on Firebase Functions",
+    version: "1.0.0",
+    timestamp: new Date().toISOString(),
     endpoints: {
+      health: "/health",
       auth: "/api/auth",
       chat: "/api/chat",
       agents: "/api/agents",
@@ -49,37 +38,75 @@ app.get("/", (req, res) => {
   });
 });
 
-// Error handling
+// Health check endpoint
+app.get("/health", (req, res) => {
+  res.json({
+    status: "healthy",
+    timestamp: new Date().toISOString(),
+    service: "LoanKit AI Functions",
+  });
+});
+
+// Simple chat endpoint (minimal example)
+app.post("/api/chat", async (req, res) => {
+  try {
+    const {message, sessionId} = req.body;
+    
+    if (!message) {
+      return res.status(400).json({error: "Message is required"});
+    }
+
+    // Simple echo response for testing
+    res.json({
+      response: `Echo: ${message}`,
+      sessionId: sessionId || "default-session",
+      timestamp: new Date().toISOString(),
+    });
+  } catch (error) {
+    console.error("Chat error:", error);
+    res.status(500).json({error: "Internal server error"});
+  }
+});
+
+// Simple auth endpoint (minimal example)
+app.post("/api/auth/login", async (req, res) => {
+  try {
+    const {email, password} = req.body;
+    
+    if (!email || !password) {
+      return res.status(400).json({error: "Email and password are required"});
+    }
+
+    // Mock login response
+    res.json({
+      success: true,
+      message: "Login successful",
+      user: {
+        email: email,
+        id: "demo-user-id",
+        name: "Demo User",
+      },
+    });
+  } catch (error) {
+    console.error("Auth error:", error);
+    res.status(500).json({error: "Internal server error"});
+  }
+});
+
+// Error handling middleware
 app.use((err, req, res, next) => {
   console.error("Error:", err);
   res.status(err.status || 500).json({
     error: err.message || "Internal server error",
-    ...(process.env.NODE_ENV === "development" && {stack: err.stack}),
   });
 });
 
 // Export the Express app as a Firebase Function
-export const api = functions.https.onRequest(app);
-
-const {onRequest} = require("firebase-functions/https");
-const logger = require("firebase-functions/logger");
-
-// For cost control, you can set the maximum number of containers that can be
-// running at the same time. This helps mitigate the impact of unexpected
-// traffic spikes by instead downgrading performance. This limit is a
-// per-function limit. You can override the limit for each function using the
-// `maxInstances` option in the function's options, e.g.
-// `onRequest({ maxInstances: 5 }, (req, res) => { ... })`.
-// NOTE: setGlobalOptions does not apply to functions using the v1 API. V1
-// functions should each use functions.runWith({ maxInstances: 10 }) instead.
-// In the v1 API, each function can only serve one request per container, so
-// this will be the maximum concurrent request count.
-setGlobalOptions({ maxInstances: 10 });
-
-// Create and deploy your first functions
-// https://firebase.google.com/docs/functions/get-started
-
-// exports.helloWorld = onRequest((request, response) => {
-//   logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+// with limited instances for cost control
+exports.api = functions
+    .runWith({
+      maxInstances: 10,
+      timeoutSeconds: 60,
+      memory: "256MB",
+    })
+    .https.onRequest(app);

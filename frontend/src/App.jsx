@@ -7,7 +7,10 @@ import ChatInterface from './components/ChatInterface';
 import './App.css';
 
 function App() {
-  const [authState, setAuthState] = useState('loading'); // loading, login, signup, authenticated
+  // Initialize authState based on presence of session token (faster initial load)
+  const [authState, setAuthState] = useState(() => {
+    return localStorage.getItem('sessionToken') ? 'loading' : 'login';
+  });
   const [user, setUser] = useState(null);
   const [sessionToken, setSessionToken] = useState(null);
   const [currentView, setCurrentView] = useState('landing'); // landing, dashboard, chat
@@ -19,32 +22,35 @@ function App() {
     const checkSession = async () => {
       const token = localStorage.getItem('sessionToken');
 
-      if (token) {
-        try {
-          // Verify session with backend and fetch fresh user data
-          const { authAPI } = await import('./services/api');
-          const data = await authAPI.getCurrentUser(token);
+      // If no token, show login immediately without async operations
+      if (!token) {
+        setAuthState('login');
+        return;
+      }
 
-          if (data.success) {
-            // Always use fresh data from server, including updated loan history
-            setUser(data.user);
-            setSessionToken(token);
-            // Update localStorage with fresh data
-            localStorage.setItem('user', JSON.stringify(data.user));
-            setAuthState('authenticated');
-          } else {
-            // Session expired or invalid
-            localStorage.removeItem('sessionToken');
-            localStorage.removeItem('user');
-            setAuthState('login');
-          }
-        } catch (error) {
-          console.error('Session verification failed:', error);
+      // Token exists, verify with backend
+      try {
+        // Verify session with backend and fetch fresh user data
+        const { authAPI } = await import('./services/api');
+        const data = await authAPI.getCurrentUser(token);
+
+        if (data.success) {
+          // Always use fresh data from server, including updated loan history
+          setUser(data.user);
+          setSessionToken(token);
+          // Update localStorage with fresh data
+          localStorage.setItem('user', JSON.stringify(data.user));
+          setAuthState('authenticated');
+        } else {
+          // Session expired or invalid
           localStorage.removeItem('sessionToken');
           localStorage.removeItem('user');
           setAuthState('login');
         }
-      } else {
+      } catch (error) {
+        console.error('Session verification failed:', error);
+        localStorage.removeItem('sessionToken');
+        localStorage.removeItem('user');
         setAuthState('login');
       }
     };

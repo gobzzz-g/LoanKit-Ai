@@ -24,10 +24,11 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 app.use(cors({
   origin: [
-    'http://localhost:5173', 
+    'http://localhost:5173',
     'http://localhost:5174',
     'https://loankit-ai-demo.web.app',
     'https://loankit-ai-demo.firebaseapp.com',
+    'https://web-production-a722.up.railway.app',
     'https://loankit-ai-production.up.railway.app'
   ],
   credentials: true
@@ -37,7 +38,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Root route
 app.get('/', (req, res) => {
-  res.json({ 
+  res.json({
     message: 'LoanKit AI Backend API',
     status: 'running',
     endpoints: {

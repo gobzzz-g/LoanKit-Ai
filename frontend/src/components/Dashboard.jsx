@@ -8,7 +8,7 @@ const Dashboard = ({ user, onStartNewApplication, onViewLoan, onBack }) => {
 
   // Mock loan data - in production, fetch from backend
   const loanApplications = user?.loanHistory || [];
-  
+
   const stats = {
     totalApplications: loanApplications.length,
     approved: loanApplications.filter(l => l.status === 'APPROVED').length,
@@ -80,7 +80,7 @@ const Dashboard = ({ user, onStartNewApplication, onViewLoan, onBack }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50 animate-fade-in">
       <div className="container mx-auto px-4 py-8 max-w-7xl">
         {/* Header */}
         <div className="mb-8">
@@ -92,7 +92,7 @@ const Dashboard = ({ user, onStartNewApplication, onViewLoan, onBack }) => {
               <ArrowLeft className="w-5 h-5" />
               <span>Back to Home</span>
             </button>
-            
+
           </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">LoanKit AI Dashboard</h1>
           <p className="text-gray-600">Track and manage your loan applications</p>
@@ -166,21 +166,19 @@ const Dashboard = ({ user, onStartNewApplication, onViewLoan, onBack }) => {
             <div className="flex gap-6">
               <button
                 onClick={() => setActiveTab('overview')}
-                className={`pb-4 px-2 font-medium transition-colors ${
-                  activeTab === 'overview'
+                className={`pb-4 px-2 font-medium transition-colors ${activeTab === 'overview'
                     ? 'text-primary-600 border-b-2 border-primary-600'
                     : 'text-gray-500 hover:text-gray-700'
-                }`}
+                  }`}
               >
                 Loan Applications
               </button>
               <button
                 onClick={() => setActiveTab('history')}
-                className={`pb-4 px-2 font-medium transition-colors ${
-                  activeTab === 'history'
+                className={`pb-4 px-2 font-medium transition-colors ${activeTab === 'history'
                     ? 'text-primary-600 border-b-2 border-primary-600'
                     : 'text-gray-500 hover:text-gray-700'
-                }`}
+                  }`}
               >
                 Payment History
               </button>
@@ -265,7 +263,7 @@ const Dashboard = ({ user, onStartNewApplication, onViewLoan, onBack }) => {
                               <span className="font-semibold">💡 Decision Transparency:</span> Approved based on credit score ({loan.creditScore || user?.creditScore}), income verification, and repayment capacity assessment.
                             </p>
                           </div>
-                          <button 
+                          <button
                             onClick={() => handleDownloadSanctionLetter(loan)}
                             disabled={downloadingLoan === loan.loanId}
                             className="text-primary-600 hover:text-primary-700 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
@@ -274,7 +272,7 @@ const Dashboard = ({ user, onStartNewApplication, onViewLoan, onBack }) => {
                           </button>
                         </div>
                       )}
-                      
+
                       {loan.status === 'REJECTED' && (
                         <div className="mt-6 pt-4 border-t border-gray-200">
                           <div className="bg-red-50 border border-red-200 rounded-lg p-3">

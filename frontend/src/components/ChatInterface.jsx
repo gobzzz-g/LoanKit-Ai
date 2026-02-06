@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-import { 
-  Send, ArrowLeft, Download, CheckCircle, Clock, 
-  AlertCircle, Bot, User, Loader2, Upload 
+import {
+  Send, ArrowLeft, Download, CheckCircle, Clock,
+  AlertCircle, Bot, User, Loader2, Upload
 } from 'lucide-react';
 import { chatAPI, pdfAPI } from '../services/api';
 import ProgressTracker from './ProgressTracker';
@@ -70,13 +70,13 @@ const ChatInterface = ({ sessionData, onBack, user, sessionToken, onLoanDecision
           };
           setMessages(prev => [...prev, agentMessage]);
           setSession(response.session);
-          
+
           // Notify parent if loan decision was made
           if (response.session.stage === 'DECISION' && response.session.underwritingResult && onLoanDecision) {
             console.log('🎯 Loan decision made, notifying parent:', response.session.underwritingResult);
             onLoanDecision(response.session.underwritingResult);
           }
-          
+
           // Auto-proceed for VERIFICATION and UNDERWRITING stages
           if (response.session.stage === 'VERIFICATION' || response.session.stage === 'UNDERWRITING') {
             setTimeout(async () => {
@@ -86,7 +86,7 @@ const ChatInterface = ({ sessionData, onBack, user, sessionToken, onLoanDecision
                   sessionData.sessionId,
                   'proceed'
                 );
-                
+
                 if (followUpResponse.success) {
                   setTyping(false);
                   setTimeout(() => {
@@ -98,12 +98,12 @@ const ChatInterface = ({ sessionData, onBack, user, sessionToken, onLoanDecision
                     };
                     setMessages(prev => [...prev, followUpMessage]);
                     setSession(followUpResponse.session);
-                    
+
                     // Notify parent if loan decision was made
                     if (followUpResponse.session.stage === 'DECISION' && followUpResponse.session.underwritingResult && onLoanDecision) {
                       onLoanDecision(followUpResponse.session.underwritingResult);
                     }
-                    
+
                     // Check if we need to auto-proceed again (for UNDERWRITING after VERIFICATION)
                     if (followUpResponse.session.stage === 'UNDERWRITING') {
                       setTimeout(async () => {
@@ -113,7 +113,7 @@ const ChatInterface = ({ sessionData, onBack, user, sessionToken, onLoanDecision
                             sessionData.sessionId,
                             'proceed'
                           );
-                          
+
                           if (finalResponse.success) {
                             setTyping(false);
                             setTimeout(() => {
@@ -125,7 +125,7 @@ const ChatInterface = ({ sessionData, onBack, user, sessionToken, onLoanDecision
                               };
                               setMessages(prev => [...prev, finalMessage]);
                               setSession(finalResponse.session);
-                              
+
                               // Notify parent if loan decision was made
                               if (finalResponse.session.stage === 'DECISION' && finalResponse.session.underwritingResult && onLoanDecision) {
                                 onLoanDecision(finalResponse.session.underwritingResult);
@@ -171,15 +171,15 @@ const ChatInterface = ({ sessionData, onBack, user, sessionToken, onLoanDecision
 
     try {
       setLoading(true);
-      
+
       // Ensure we have customer data with name
       const customerData = {
         ...session.customer,
         name: session.customer?.name || user?.name || 'Customer'
       };
-      
+
       console.log('📄 Downloading sanction letter for:', customerData.name);
-      
+
       const blob = await pdfAPI.generateSanctionLetter(
         customerData,
         session.loanRequest,
@@ -228,11 +228,11 @@ const ChatInterface = ({ sessionData, onBack, user, sessionToken, onLoanDecision
       setMessages(prev => [...prev, userMsg]);
       setLoading(true);
       setTyping(true);
-      
+
       try {
         // Send message to backend
         const response = await chatAPI.sendMessage(sessionData.sessionId, reply);
-        
+
         if (response.success) {
           setTyping(false);
           setTimeout(() => {
@@ -244,12 +244,12 @@ const ChatInterface = ({ sessionData, onBack, user, sessionToken, onLoanDecision
             };
             setMessages(prev => [...prev, agentMessage]);
             setSession(response.session);
-            
+
             // Notify parent if loan decision was made
             if (response.session.stage === 'DECISION' && response.session.underwritingResult && onLoanDecision) {
               onLoanDecision(response.session.underwritingResult);
             }
-            
+
             // Trigger download after response is shown
             setTimeout(() => {
               handleDownloadSanctionLetter();
@@ -264,11 +264,11 @@ const ChatInterface = ({ sessionData, onBack, user, sessionToken, onLoanDecision
       }
       return;
     }
-    
+
     // For other quick replies, use the normal flow
     setInputMessage(reply);
     setTimeout(() => {
-      const event = { preventDefault: () => {} };
+      const event = { preventDefault: () => { } };
       handleSendMessage(event);
     }, 100);
   };
@@ -276,7 +276,7 @@ const ChatInterface = ({ sessionData, onBack, user, sessionToken, onLoanDecision
   const handleDocumentUpload = async (documentData) => {
     console.log('Document uploaded:', documentData);
     setShowDocumentUpload(false);
-    
+
     // Add confirmation message
     const confirmMessage = {
       id: Date.now(),
@@ -285,7 +285,7 @@ const ChatInterface = ({ sessionData, onBack, user, sessionToken, onLoanDecision
       timestamp: new Date()
     };
     setMessages(prev => [...prev, confirmMessage]);
-    
+
     // Send "documents uploaded" message to backend
     try {
       setLoading(true);
@@ -332,7 +332,7 @@ const ChatInterface = ({ sessionData, onBack, user, sessionToken, onLoanDecision
   const quickReplies = getQuickReplies();
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-50 via-white to-blue-50">
       {/* Header */}
       <header className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-10">
         <div className="container mx-auto px-4 py-4">
@@ -358,7 +358,7 @@ const ChatInterface = ({ sessionData, onBack, user, sessionToken, onLoanDecision
                 </div>
               </div>
             </div>
-            
+
             {session.underwritingResult?.decision === 'APPROVED' && (
               <button
                 onClick={handleDownloadSanctionLetter}
@@ -383,7 +383,7 @@ const ChatInterface = ({ sessionData, onBack, user, sessionToken, onLoanDecision
             {messages.map((message) => (
               <MessageBubble key={message.id} message={message} />
             ))}
-            
+
             {typing && (
               <div className="flex items-start gap-3 animate-slide-up">
                 <div className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center flex-shrink-0">
@@ -409,14 +409,14 @@ const ChatInterface = ({ sessionData, onBack, user, sessionToken, onLoanDecision
                 <p className="text-sm text-gray-600 mb-4">
                   Since your loan amount of ₹{session.loanRequest?.amount?.toLocaleString('en-IN')} exceeds your pre-approved limit of ₹{session.customer?.preApprovedLimit?.toLocaleString('en-IN')}, please upload the required documents for verification.
                 </p>
-                <DocumentUpload 
+                <DocumentUpload
                   documentType="Salary Slip / Bank Statement"
                   onUploadComplete={handleDocumentUpload}
                   required={true}
                 />
               </div>
             )}
-            
+
             <div ref={messagesEndRef} />
           </div>
         </div>

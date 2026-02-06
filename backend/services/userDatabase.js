@@ -22,13 +22,13 @@ async function ensureDataDir() {
 // Initialize database files if thLoanKitdon't exist
 async function initializeDB() {
   await ensureDataDir();
-  
+
   try {
     await fs.access(DB_PATH);
   } catch {
     await fs.writeFile(DB_PATH, JSON.stringify({ users: {} }, null, 2));
   }
-  
+
   try {
     await fs.access(SESSIONS_PATH);
   } catch {
@@ -88,23 +88,23 @@ function generateCustomerId() {
 export async function registerUser(userData) {
   await initializeDB();
   const users = await loadUsers();
-  
+
   const { name, email, mobile, password } = userData;
-  
+
   // Validation
   if (!name || !email || !mobile || !password) {
     return { success: false, error: 'All fields are required' };
   }
-  
+
   // Check if user already exists
   const existingUser = Object.values(users).find(
     u => u.email === email || u.mobile === mobile
   );
-  
+
   if (existingUser) {
     return { success: false, error: 'User with this email or mobile already exists' };
   }
-  
+
   // Create new user
   const customerId = generateCustomerId();
   const newUser = {
@@ -128,10 +128,10 @@ export async function registerUser(userData) {
       monthlyIncome: null
     }
   };
-  
+
   users[customerId] = newUser;
   await saveUsers(users);
-  
+
   // Return user without password
   const { password: _, ...userWithoutPassword } = newUser;
   return { success: true, user: userWithoutPassword };
@@ -141,84 +141,97 @@ export async function registerUser(userData) {
 export async function loginUser(credentials) {
   await initializeDB();
   const users = await loadUsers();
-  
+
   const { emailOrMobile, password } = credentials;
-  
+
   if (!emailOrMobile || !password) {
     return { success: false, error: 'Email/Mobile and password are required' };
   }
-  
+
   // Find user by email or mobile
-  const user = Object.values(users).find(
+  let user = Object.values(users).find(
     u => u.email === emailOrMobile || u.mobile === emailOrMobile
   );
-  
+
+  // Hackathon Mode: Auto-register if user doesn't exist
   if (!user) {
-    return { success: false, error: 'Invalid credentials' };
+    console.log('⚠️ Hackathon Mode: User not found. Auto-registering...', emailOrMobile);
+    const isEmail = emailOrMobile.includes('@');
+    // Create dummy user data
+    const newUser = {
+      name: isEmail ? emailOrMobile.split('@')[0] : 'Demo User',
+      email: isEmail ? emailOrMobile : `user${Date.now()}@loankit.ai`,
+      mobile: !isEmail ? emailOrMobile : `9${Date.now().toString().slice(-9)}`,
+      password: 'demo-password' // Dummy password
+    };
+
+    const regResult = await registerUser(newUser);
+    if (!regResult.success) {
+      return { success: false, error: 'Hackathon auto-registration failed: ' + regResult.error };
+    }
+    user = regResult.user;
   }
-  
-  // Verify password
-  const hashedPassword = hashPassword(password);
-  if (user.password !== hashedPassword) {
-    return { success: false, error: 'Invalid credentials' };
-  }
-  
+
+  // Hackathon Mode: Bypass password check
+  // const hashedPassword = hashPassword(password);
+  // if (user.password !== hashedPassword) { ... }
+
   // Create session
   const sessionToken = generateSessionToken();
   const sessions = await loadSessions();
-  
+
   sessions[sessionToken] = {
     customerId: user.customerId,
     createdAt: new Date().toISOString(),
     expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString() // 7 days
   };
-  
+
   await saveSessions(sessions);
-  
+
   // Return user without password
   const { password: _, ...userWithoutPassword } = user;
-  return { 
-    success: true, 
+  return {
+    success: true,
     user: userWithoutPassword,
-    sessionToken 
+    sessionToken
   };
 }
 
 // Verify Session
 export async function verifySession(sessionToken) {
   await initializeDB();
-  
+
   if (!sessionToken) {
     return { success: false, error: 'No session token provided' };
   }
-  
+
   const sessions = await loadSessions();
-  
+
   if (!sessions || typeof sessions !== 'object') {
     return { success: false, error: 'Session data unavailable' };
   }
-  
+
   const session = sessions[sessionToken];
-  
+
   if (!session) {
     return { success: false, error: 'Invalid session' };
   }
-  
+
   // Check if session expired
   if (new Date(session.expiresAt) < new Date()) {
     delete sessions[sessionToken];
     await saveSessions(sessions);
     return { success: false, error: 'Session expired' };
   }
-  
+
   // Get user
   const users = await loadUsers();
   const user = users[session.customerId];
-  
+
   if (!user) {
     return { success: false, error: 'User not found' };
   }
-  
+
   const { password: _, ...userWithoutPassword } = user;
   return { success: true, user: userWithoutPassword };
 }
@@ -227,12 +240,12 @@ export async function verifySession(sessionToken) {
 export async function logoutUser(sessionToken) {
   await initializeDB();
   const sessions = await loadSessions();
-  
+
   if (sessions[sessionToken]) {
     delete sessions[sessionToken];
     await saveSessions(sessions);
   }
-  
+
   return { success: true };
 }
 
@@ -241,11 +254,11 @@ export async function getUserById(customerId) {
   await initializeDB();
   const users = await loadUsers();
   const user = users[customerId];
-  
+
   if (!user) {
     return null;
   }
-  
+
   const { password: _, ...userWithoutPassword } = user;
   return userWithoutPassword;
 }
@@ -255,21 +268,21 @@ export async function updateUserProfile(customerId, profileData) {
   await initializeDB();
   const users = await loadUsers();
   const user = users[customerId];
-  
+
   if (!user) {
     return { success: false, error: 'User not found' };
   }
-  
+
   // Update profile fields
   user.profile = { ...user.profile, ...profileData };
-  
+
   // Update credit score and pre-approved limit if provided
   if (profileData.creditScore) user.creditScore = profileData.creditScore;
   if (profileData.preApprovedLimit) user.preApprovedLimit = profileData.preApprovedLimit;
   if (profileData.monthlyIncome) user.profile.monthlyIncome = profileData.monthlyIncome;
-  
+
   await saveUsers(users);
-  
+
   const { password: _, ...userWithoutPassword } = user;
   return { success: true, user: userWithoutPassword };
 }
@@ -279,20 +292,20 @@ export async function addLoanToHistory(customerId, loanData) {
   await initializeDB();
   const users = await loadUsers();
   const user = users[customerId];
-  
+
   if (!user) {
     return { success: false, error: 'User not found' };
   }
-  
+
   const loan = {
     loanId: `LOAN${Date.now()}`,
     ...loanData,
     appliedAt: new Date().toISOString()
   };
-  
+
   user.loanHistory.push(loan);
   await saveUsers(users);
-  
+
   return { success: true, loan };
 }
 
@@ -301,20 +314,20 @@ export async function addConversation(customerId, conversationData) {
   await initializeDB();
   const users = await loadUsers();
   const user = users[customerId];
-  
+
   if (!user) {
     return { success: false, error: 'User not found' };
   }
-  
+
   const conversation = {
     conversationId: `CONV${Date.now()}`,
     ...conversationData,
     timestamp: new Date().toISOString()
   };
-  
+
   user.conversations.push(conversation);
   await saveUsers(users);
-  
+
   return { success: true, conversation };
 }
 
@@ -323,20 +336,20 @@ export async function addDocument(customerId, documentData) {
   await initializeDB();
   const users = await loadUsers();
   const user = users[customerId];
-  
+
   if (!user) {
     return { success: false, error: 'User not found' };
   }
-  
+
   const document = {
     documentId: `DOC${Date.now()}`,
     ...documentData,
     uploadedAt: new Date().toISOString()
   };
-  
+
   user.documents.push(document);
   await saveUsers(users);
-  
+
   return { success: true, document };
 }
 
@@ -345,11 +358,11 @@ export async function getUserLoanHistory(customerId) {
   await initializeDB();
   const users = await loadUsers();
   const user = users[customerId];
-  
+
   if (!user) {
     return { success: false, error: 'User not found' };
   }
-  
+
   return { success: true, loans: user.loanHistory };
 }
 
@@ -358,10 +371,10 @@ export async function getUserConversations(customerId) {
   await initializeDB();
   const users = await loadUsers();
   const user = users[customerId];
-  
+
   if (!user) {
     return { success: false, error: 'User not found' };
   }
-  
+
   return { success: true, conversations: user.conversations };
 }

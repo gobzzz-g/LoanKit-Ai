@@ -2,6 +2,9 @@ import axios from 'axios';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
+console.log('🔌 API Service Initializing...');
+console.log('🔗 API_BASE_URL:', API_BASE_URL);
+
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
@@ -15,30 +18,30 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const config = error.config;
-    
+
     // If timeout or network error and haven't retried yet
     if ((!error.response || error.code === 'ECONNABORTED') && !config._retry) {
       config._retry = true;
       console.log('Backend might be sleeping, retrying...');
-      
+
       // Wait 3 seconds and retry
       await new Promise(resolve => setTimeout(resolve, 3000));
       return api(config);
     }
-    
+
     return Promise.reject(error);
   }
 );
 
 export const chatAPI = {
   startSession: async (customerId, userName) => {
-    const response = await api.post('/chat/start', { 
+    const response = await api.post('/chat/start', {
       customerId,
-      userName 
+      userName
     });
     return response.data;
   },
-  
+
   sendMessage: async (sessionId, message, metadata = {}) => {
     const response = await api.post('/chat/message', {
       sessionId,
@@ -47,7 +50,7 @@ export const chatAPI = {
     });
     return response.data;
   },
-  
+
   getSession: async (sessionId) => {
     const response = await api.get(`/chat/session/${sessionId}`);
     return response.data;
@@ -59,7 +62,7 @@ export const agentAPI = {
     const response = await api.get('/agents/demo-customers');
     return response.data;
   },
-  
+
   getCustomer: async (customerId) => {
     const response = await api.get(`/agents/customer/${customerId}`);
     return response.data;

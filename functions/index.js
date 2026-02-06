@@ -20,7 +20,7 @@ app.use(cors({
   credentials: true,
 }));
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
 // Root endpoint
 app.get("/", (req, res) => {
@@ -50,10 +50,10 @@ app.get("/health", (req, res) => {
 // Simple chat endpoint (minimal example)
 app.post("/api/chat", async (req, res) => {
   try {
-    const {message, sessionId} = req.body;
-    
+    const { message, sessionId } = req.body;
+
     if (!message) {
-      return res.status(400).json({error: "Message is required"});
+      return res.status(400).json({ error: "Message is required" });
     }
 
     // Simple echo response for testing
@@ -64,49 +64,38 @@ app.post("/api/chat", async (req, res) => {
     });
   } catch (error) {
     console.error("Chat error:", error);
-    res.status(500).json({error: "Internal server error"});
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
 // Simple auth endpoint (minimal example)
 app.post("/api/auth/login", async (req, res) => {
   try {
-    const {email, password} = req.body;
-    
-    if (!email || !password) {
-      return res.status(400).json({error: "Email and password are required"});
+    const { email } = req.body;
+
+    // Hackathon-safe: allow any email
+    if (!email) {
+      return res.status(400).json({ error: "Email is required" });
     }
 
-    // Mock login response
-    res.json({
+    // Demo login success
+    return res.status(200).json({
       success: true,
-      message: "Login successful",
-      user: {
-        email: email,
-        id: "demo-user-id",
-        name: "Demo User",
-      },
+      user: { email },
+      token: "demo-token"
     });
+
   } catch (error) {
     console.error("Auth error:", error);
-    res.status(500).json({error: "Internal server error"});
+    return res.status(500).json({ error: "Internal server error" });
   }
 });
-
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error("Error:", err);
-  res.status(err.status || 500).json({
-    error: err.message || "Internal server error",
-  });
-});
-
 // Export the Express app as a Firebase Function
 // with limited instances for cost control
 exports.api = functions
-    .runWith({
-      maxInstances: 10,
-      timeoutSeconds: 60,
-      memory: "256MB",
-    })
-    .https.onRequest(app);
+  .runWith({
+    maxInstances: 10,
+    timeoutSeconds: 60,
+    memory: "256MB",
+  })
+  .https.onRequest(app);

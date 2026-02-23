@@ -12,13 +12,11 @@ const ProgressTracker = ({ currentStage, session }) => {
 
   const getStageIndex = (stage) => {
     const index = stages.findIndex(s => s.id === stage);
-    // If DOCUMENT_UPLOAD stage is not active, skip it in progress display
     return index;
   };
   const currentIndex = getStageIndex(currentStage);
 
   const getStageStatus = (index) => {
-    // If we're at DECISION stage and have an underwriting result, mark it as complete
     if (stages[index].id === 'DECISION' && currentStage === 'DECISION' && session.underwritingResult) {
       return 'complete';
     }
@@ -30,25 +28,21 @@ const ProgressTracker = ({ currentStage, session }) => {
   const getStageColor = (status) => {
     switch (status) {
       case 'complete':
-        return 'text-success-600 bg-success-50 border-success-200';
+        return 'text-green-300 bg-green-500/20 border-green-400/50';
       case 'active':
-        return 'text-primary-600 bg-primary-50 border-primary-200';
+        return 'text-blue-300 bg-blue-500/20 border-blue-400/50';
       default:
-        return 'text-gray-400 bg-gray-50 border-gray-200';
+        return 'text-gray-400 bg-white/5 border-white/10';
     }
   };
 
-  // Filter out DOCUMENT_UPLOAD stage if documents are not required
   const displayStages = stages.filter(stage => {
-    // Always show DOCUMENT_UPLOAD if it's the current stage
     if (stage.id === 'DOCUMENT_UPLOAD' && currentStage === 'DOCUMENT_UPLOAD') {
       return true;
     }
-    // Show DOCUMENT_UPLOAD if we passed through it (has documentsUploaded)
     if (stage.id === 'DOCUMENT_UPLOAD' && session.documentsUploaded && session.documentsUploaded.length > 0) {
       return true;
     }
-    // Hide DOCUMENT_UPLOAD if we skipped it
     if (stage.id === 'DOCUMENT_UPLOAD') {
       return false;
     }
@@ -56,7 +50,7 @@ const ProgressTracker = ({ currentStage, session }) => {
   });
 
   return (
-    <div className="bg-white border-b border-gray-200 py-4">
+    <div className="backdrop-blur-lg bg-white/5 border-b border-white/20 py-4">
       <div className="container mx-auto px-4 max-w-4xl">
         <div className="flex items-center justify-between">
           {displayStages.map((stage, displayIndex) => {
@@ -68,18 +62,18 @@ const ProgressTracker = ({ currentStage, session }) => {
             return (
               <div key={stage.id} className="flex items-center flex-1">
                 <div className="flex flex-col items-center flex-1">
-                  <div className={`w-10 h-10 rounded-full border-2 flex items-center justify-center mb-2 transition-all duration-300 ${getStageColor(status)}`}>
+                  <div className={`w-10 h-10 rounded-full border-2 flex items-center justify-center mb-2 transition-all duration-300 backdrop-blur-lg ${getStageColor(status)}`}>
                     <Icon className={`w-5 h-5 ${status === 'active' ? 'animate-spin' : ''}`} />
                   </div>
                   <div className="text-center">
                     <div className={`text-xs font-semibold ${
-                      status === 'complete' ? 'text-success-600' :
-                      status === 'active' ? 'text-primary-600' :
+                      status === 'complete' ? 'text-green-300' :
+                      status === 'active' ? 'text-blue-300' :
                       'text-gray-400'
                     }`}>
                       {stage.label}
                     </div>
-                    <div className="text-[10px] text-gray-500 mt-0.5">
+                    <div className="text-[10px] text-blue-200/70 mt-0.5">
                       {stage.description}
                     </div>
                   </div>
@@ -87,7 +81,7 @@ const ProgressTracker = ({ currentStage, session }) => {
                 
                 {displayIndex < displayStages.length - 1 && (
                   <div className={`flex-1 h-0.5 mb-6 transition-all duration-300 ${
-                    status === 'complete' ? 'bg-success-500' : 'bg-gray-200'
+                    status === 'complete' ? 'bg-green-400/50' : 'bg-white/10'
                   }`} />
                 )}
               </div>
@@ -97,21 +91,23 @@ const ProgressTracker = ({ currentStage, session }) => {
 
         {/* Session Info */}
         {session.customer && (
-          <div className="mt-4 pt-4 border-t border-gray-200 text-sm text-gray-600">
-            <div className="flex items-center justify-between">
+          <div className="mt-4 pt-4 border-t border-white/10 text-sm text-blue-100">
+            <div className="flex items-center justify-between flex-wrap gap-4">
               <div>
-                <span className="font-medium">Pre-approved Limit:</span>{' '}
-                ₹{session.customer.preApprovedLimit?.toLocaleString('en-IN')}
+                <span className="font-medium text-blue-200">Pre-approved Limit:</span>{' '}
+                <span className="font-semibold text-white">₹{session.customer.preApprovedLimit?.toLocaleString('en-IN')}</span>
               </div>
               {session.loanRequest?.amount && (
                 <div>
-                  <span className="font-medium">Requested:</span>{' '}
-                  ₹{session.loanRequest.amount.toLocaleString('en-IN')} for {session.loanRequest.tenure} months
+                  <span className="font-medium text-blue-200">Requested:</span>{' '}
+                  <span className="font-semibold text-white">₹{session.loanRequest.amount.toLocaleString('en-IN')}</span> for {session.loanRequest.tenure} months
                 </div>
               )}
               {session.underwritingResult && (
-                <div className={`font-semibold ${
-                  session.underwritingResult.decision === 'APPROVED' ? 'text-success-600' : 'text-red-600'
+                <div className={`font-semibold px-3 py-1 rounded-full ${
+                  session.underwritingResult.decision === 'APPROVED' 
+                    ? 'bg-green-500/20 text-green-300' 
+                    : 'bg-red-500/20 text-red-300'
                 }`}>
                   {session.underwritingResult.decision === 'APPROVED' ? '✅ Approved' : '❌ Not Approved'}
                 </div>

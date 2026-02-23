@@ -1,12 +1,14 @@
 import { useState } from 'react';
-import { TrendingUp, XCircle, Clock, CheckCircle, FileText, Calendar, DollarSign, ArrowLeft } from 'lucide-react';
+import { TrendingUp, XCircle, Clock, CheckCircle, FileText, Calendar, DollarSign, ArrowLeft, Sparkles, Download } from 'lucide-react';
 import { pdfAPI } from '../services/api';
+import GradientBackground from './ui/GradientBackground';
+import PremiumCard from './ui/PremiumCard';
+import PremiumButton from './ui/PremiumButton';
 
 const Dashboard = ({ user, onStartNewApplication, onViewLoan, onBack }) => {
   const [activeTab, setActiveTab] = useState('overview');
   const [downloadingLoan, setDownloadingLoan] = useState(null);
 
-  // Mock loan data - in production, fetch from backend
   const loanApplications = user?.loanHistory || [];
 
   const stats = {
@@ -19,26 +21,26 @@ const Dashboard = ({ user, onStartNewApplication, onViewLoan, onBack }) => {
   const getStatusIcon = (status) => {
     switch (status) {
       case 'APPROVED':
-        return <CheckCircle className="w-5 h-5 text-green-600" />;
+        return <CheckCircle className="w-5 h-5 text-green-400" />;
       case 'REJECTED':
-        return <XCircle className="w-5 h-5 text-red-600" />;
+        return <XCircle className="w-5 h-5 text-red-400" />;
       case 'PENDING':
-        return <Clock className="w-5 h-5 text-yellow-600" />;
+        return <Clock className="w-5 h-5 text-yellow-400" />;
       default:
-        return <FileText className="w-5 h-5 text-gray-600" />;
+        return <FileText className="w-5 h-5 text-blue-400" />;
     }
   };
 
   const getStatusColor = (status) => {
     switch (status) {
       case 'APPROVED':
-        return 'bg-green-50 text-green-700 border-green-200';
+        return 'bg-green-500/20 text-green-300 border-green-400/50';
       case 'REJECTED':
-        return 'bg-red-50 text-red-700 border-red-200';
+        return 'bg-red-500/20 text-red-300 border-red-400/50';
       case 'PENDING':
-        return 'bg-yellow-50 text-yellow-700 border-yellow-200';
+        return 'bg-yellow-500/20 text-yellow-300 border-yellow-400/50';
       default:
-        return 'bg-gray-50 text-gray-700 border-gray-200';
+        return 'bg-blue-500/20 text-blue-300 border-blue-400/50';
     }
   };
 
@@ -80,225 +82,217 @@ const Dashboard = ({ user, onStartNewApplication, onViewLoan, onBack }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50 animate-fade-in">
-      <div className="container mx-auto px-4 py-8 max-w-7xl">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex justify-between items-center mb-4">
-            <button
+    <GradientBackground>
+      <div className="min-h-screen p-4 md:p-8 animate-fade-in">
+        <div className="container mx-auto max-w-7xl">
+          
+          {/* Header */}
+          <div className="mb-8">
+            <PremiumButton
               onClick={onBack}
-              className="flex items-center gap-2 text-gray-600 hover:text-primary-600 transition-colors"
+              variant="ghost"
+              size="sm"
+              className="mb-4"
+              icon={ArrowLeft}
+              iconPosition="left"
             >
-              <ArrowLeft className="w-5 h-5" />
-              <span>Back to Home</span>
-            </button>
+              Back to Home
+            </PremiumButton>
 
-          </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">LoanKit AI Dashboard</h1>
-          <p className="text-gray-600">Track and manage your loan applications</p>
-        </div>
-
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
-          <div className="card bg-white">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="p-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl shadow-lg shadow-blue-500/50">
+                <Sparkles className="w-8 h-8 text-white" />
+              </div>
               <div>
-                <p className="text-sm text-gray-600 mb-1">Total Applications</p>
-                <p className="text-3xl font-bold text-gray-900">{stats.totalApplications}</p>
-              </div>
-              <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center">
-                <FileText className="w-6 h-6 text-primary-600" />
+                <h1 className="text-3xl md:text-4xl font-bold text-white">LoanKit AI Dashboard</h1>
+                <p className="text-blue-200">Track and manage your loan applications</p>
               </div>
             </div>
           </div>
 
-          <div className="card bg-white">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600 mb-1">Approved</p>
-                <p className="text-3xl font-bold text-green-600">{stats.approved}</p>
-              </div>
-              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                <CheckCircle className="w-6 h-6 text-green-600" />
-              </div>
-            </div>
-          </div>
-
-          <div className="card bg-white">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600 mb-1">Pending</p>
-                <p className="text-3xl font-bold text-yellow-600">{stats.pending}</p>
-              </div>
-              <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
-                <Clock className="w-6 h-6 text-yellow-600" />
-              </div>
-            </div>
-          </div>
-
-          <div className="card bg-white">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600 mb-1">Rejected</p>
-                <p className="text-3xl font-bold text-red-600">{stats.rejected}</p>
-              </div>
-              <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
-                <XCircle className="w-6 h-6 text-red-600" />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Action Button */}
-        <div className="mb-8">
-          <button
-            onClick={onStartNewApplication}
-            className="btn-primary flex items-center gap-2 text-lg px-8 py-4"
-          >
-            <TrendingUp className="w-5 h-5" />
-            Start New Loan Application
-          </button>
-        </div>
-
-        {/* Tabs */}
-        <div className="card bg-white">
-          <div className="border-b border-gray-200 mb-6">
-            <div className="flex gap-6">
-              <button
-                onClick={() => setActiveTab('overview')}
-                className={`pb-4 px-2 font-medium transition-colors ${activeTab === 'overview'
-                    ? 'text-primary-600 border-b-2 border-primary-600'
-                    : 'text-gray-500 hover:text-gray-700'
-                  }`}
-              >
-                Loan Applications
-              </button>
-              <button
-                onClick={() => setActiveTab('history')}
-                className={`pb-4 px-2 font-medium transition-colors ${activeTab === 'history'
-                    ? 'text-primary-600 border-b-2 border-primary-600'
-                    : 'text-gray-500 hover:text-gray-700'
-                  }`}
-              >
-                Payment History
-              </button>
-            </div>
-          </div>
-
-          {/* Content */}
-          {activeTab === 'overview' && (
-            <div>
-              {loanApplications.length === 0 ? (
-                <div className="text-center py-12">
-                  <FileText className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">No Loan Applications Yet</h3>
-                  <p className="text-gray-500 mb-6">Start your first loan application to see it here</p>
-                  <button onClick={onStartNewApplication} className="btn-primary">
-                    Apply for Loan
-                  </button>
+          {/* Stats Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6 mb-10">
+            {[
+              { label: 'Total Applications', value: stats.totalApplications, icon: FileText, gradient: 'from-blue-400 to-blue-600' },
+              { label: 'Approved', value: stats.approved, icon: CheckCircle, gradient: 'from-green-400 to-green-600' },
+              { label: 'Pending', value: stats.pending, icon: Clock, gradient: 'from-yellow-400 to-yellow-600' },
+              { label: 'Rejected', value: stats.rejected, icon: XCircle, gradient: 'from-red-400 to-red-600' }
+            ].map((stat, index) => (
+              <PremiumCard key={index} variant="glass" className="p-6 hover:scale-105" hover>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-blue-200 mb-1">{stat.label}</p>
+                    <p className="text-3xl font-bold text-white">{stat.value}</p>
+                  </div>
+                  <div className={`w-12 h-12 bg-gradient-to-r ${stat.gradient} rounded-xl flex items-center justify-center shadow-lg`}>
+                    <stat.icon className="w-6 h-6 text-white" />
+                  </div>
                 </div>
-              ) : (
-                <div className="space-y-4">
-                  {loanApplications.map((loan, index) => (
-                    <div
-                      key={index}
-                      className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow bg-white"
-                    >
-                      <div className="flex items-start justify-between mb-6">
-                        <div className="flex items-center gap-3">
-                          {getStatusIcon(loan.status)}
+              </PremiumCard>
+            ))}
+          </div>
+
+          {/* Action Button */}
+          <div className="mb-8">
+            <PremiumButton
+              onClick={onStartNewApplication}
+              variant="primary"
+              size="lg"
+              icon={TrendingUp}
+              iconPosition="left"
+              className="text-lg"
+            >
+              Start New Loan Application
+            </PremiumButton>
+          </div>
+
+          {/* Tabs */}
+          <PremiumCard variant="glass" className="p-6">
+            <div className="border-b border-white/20 mb-6">
+              <div className="flex gap-6">
+                <button
+                  onClick={() => setActiveTab('overview')}
+                  className={`pb-4 px-2 font-medium transition-colors ${
+                    activeTab === 'overview'
+                      ? 'text-white border-b-2 border-blue-400'
+                      : 'text-blue-200 hover:text-white'
+                  }`}
+                >
+                  Loan Applications
+                </button>
+                <button
+                  onClick={() => setActiveTab('history')}
+                  className={`pb-4 px-2 font-medium transition-colors ${
+                    activeTab === 'history'
+                      ? 'text-white border-b-2 border-blue-400'
+                      : 'text-blue-200 hover:text-white'
+                  }`}
+                >
+                  Payment History
+                </button>
+              </div>
+            </div>
+
+            {/* Content */}
+            {activeTab === 'overview' && (
+              <div>
+                {loanApplications.length === 0 ? (
+                  <div className="text-center py-12">
+                    <FileText className="w-16 h-16 text-blue-300 mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-white mb-2">No Loan Applications Yet</h3>
+                    <p className="text-blue-200 mb-6">Start your first loan application to see it here</p>
+                    <PremiumButton onClick={onStartNewApplication} variant="secondary">
+                      Apply for Loan
+                    </PremiumButton>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {loanApplications.map((loan, index) => (
+                      <PremiumCard
+                        key={index}
+                        variant="glassDark"
+                        className="p-6 hover:bg-white/15"
+                      >
+                        <div className="flex items-start justify-between mb-6">
+                          <div className="flex items-center gap-3">
+                            {getStatusIcon(loan.status)}
+                            <div>
+                              <h3 className="font-semibold text-white">
+                                Loan Application #{loan.loanId || `LOAN${Date.now().toString().slice(-12)}`}
+                              </h3>
+                              <p className="text-sm text-blue-200 mt-1">
+                                {new Date(loan.appliedAt || Date.now()).toLocaleDateString('en-GB', {
+                                  day: 'numeric',
+                                  month: 'short',
+                                  year: 'numeric'
+                                })} at {new Date(loan.appliedAt || Date.now()).toLocaleTimeString('en-US', {
+                                  hour: 'numeric',
+                                  minute: '2-digit',
+                                  hour12: true
+                                })}
+                              </p>
+                            </div>
+                          </div>
+                          <span className={`px-3 py-1 rounded-full text-sm font-medium border ${getStatusColor(loan.status)}`}>
+                            {loan.status}
+                          </span>
+                        </div>
+
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                           <div>
-                            <h3 className="font-semibold text-gray-900">
-                              Loan Application #{loan.loanId || `LOAN${Date.now().toString().slice(-12)}`}
-                            </h3>
-                            <p className="text-sm text-gray-500 mt-1">
-                              {new Date(loan.appliedAt || Date.now()).toLocaleDateString('en-GB', {
-                                day: 'numeric',
-                                month: 'short',
-                                year: 'numeric'
-                              })} at {new Date(loan.appliedAt || Date.now()).toLocaleTimeString('en-US', {
-                                hour: 'numeric',
-                                minute: '2-digit',
-                                hour12: true
-                              })}
+                            <p className="text-xs text-blue-200/70 mb-1">Loan Amount</p>
+                            <p className="font-semibold text-white">
+                              ₹{loan.amount?.toLocaleString('en-IN') || 'N/A'}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-blue-200/70 mb-1">Tenure</p>
+                            <p className="font-semibold text-white">
+                              {loan.tenure} months
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-blue-200/70 mb-1">Interest Rate</p>
+                            <p className="font-semibold text-white">
+                              {loan.interestRate}% p.a.
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-blue-200/70 mb-1">Monthly EMI</p>
+                            <p className="font-semibold text-white">
+                              ₹{loan.emi?.toLocaleString('en-IN') || 'N/A'}
                             </p>
                           </div>
                         </div>
-                        <span className={`px-3 py-1 rounded-full text-sm font-medium border ${getStatusColor(loan.status)}`}>
-                          {loan.status}
-                        </span>
-                      </div>
 
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                        <div>
-                          <p className="text-xs text-gray-500 mb-1">Loan Amount</p>
-                          <p className="font-semibold text-gray-900">
-                            ₹{loan.amount?.toLocaleString('en-IN') || 'N/A'}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-xs text-gray-500 mb-1">Tenure</p>
-                          <p className="font-semibold text-gray-900">
-                            {loan.tenure} months
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-xs text-gray-500 mb-1">Interest Rate</p>
-                          <p className="font-semibold text-gray-900">
-                            {loan.interestRate}% p.a.
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-xs text-gray-500 mb-1">Monthly EMI</p>
-                          <p className="font-semibold text-gray-900">
-                            ₹{loan.emi?.toLocaleString('en-IN') || 'N/A'}
-                          </p>
-                        </div>
-                      </div>
-
-                      {loan.status === 'APPROVED' && (
-                        <div className="mt-6 pt-4 border-t border-gray-200 space-y-3">
-                          <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-                            <p className="text-xs text-green-800">
-                              <span className="font-semibold">💡 Decision Transparency:</span> Approved based on credit score ({loan.creditScore || user?.creditScore}), income verification, and repayment capacity assessment.
-                            </p>
+                        {loan.status === 'APPROVED' && (
+                          <div className="mt-6 pt-4 border-t border-white/10 space-y-3">
+                            <div className="bg-green-500/20 border border-green-400/50 rounded-lg p-3">
+                              <p className="text-xs text-green-200">
+                                <span className="font-semibold">💡 Decision Transparency:</span> Approved based on credit score ({loan.creditScore || user?.creditScore}), income verification, and repayment capacity assessment.
+                              </p>
+                            </div>
+                            <PremiumButton
+                              onClick={() => handleDownloadSanctionLetter(loan)}
+                              disabled={downloadingLoan === loan.loanId}
+                              variant="secondary"
+                              size="sm"
+                              loading={downloadingLoan === loan.loanId}
+                              icon={Download}
+                              iconPosition="left"
+                            >
+                              {downloadingLoan === loan.loanId ? 'Downloading...' : 'Download Sanction Letter'}
+                            </PremiumButton>
                           </div>
-                          <button
-                            onClick={() => handleDownloadSanctionLetter(loan)}
-                            disabled={downloadingLoan === loan.loanId}
-                            className="text-primary-600 hover:text-primary-700 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-                          >
-                            {downloadingLoan === loan.loanId ? 'Downloading...' : 'Download Sanction Letter →'}
-                          </button>
-                        </div>
-                      )}
+                        )}
 
-                      {loan.status === 'REJECTED' && (
-                        <div className="mt-6 pt-4 border-t border-gray-200">
-                          <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-                            <p className="text-xs text-red-800">
-                              <span className="font-semibold">💡 Decision Transparency:</span> Decision based on credit assessment, current debt obligations, and lending policy compliance.
-                            </p>
+                        {loan.status === 'REJECTED' && (
+                          <div className="mt-6 pt-4 border-t border-white/10">
+                            <div className="bg-red-500/20 border border-red-400/50 rounded-lg p-3">
+                              <p className="text-xs text-red-200">
+                                <span className="font-semibold">💡 Decision Transparency:</span> Decision based on credit assessment, current debt obligations, and lending policy compliance.
+                              </p>
+                            </div>
                           </div>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
+                        )}
+                      </PremiumCard>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
 
-          {activeTab === 'history' && (
-            <div className="text-center py-12">
-              <Calendar className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No Payment History</h3>
-              <p className="text-gray-500">Your payment history will appear here once you have active loans</p>
-            </div>
-          )}
+            {activeTab === 'history' && (
+              <div className="text-center py-12">
+                <Calendar className="w-16 h-16 text-blue-300 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-white mb-2">No Payment History</h3>
+                <p className="text-blue-200">Your payment history will appear here once you have active loans</p>
+              </div>
+            )}
+          </PremiumCard>
         </div>
       </div>
-    </div>
+    </GradientBackground>
   );
 };
 

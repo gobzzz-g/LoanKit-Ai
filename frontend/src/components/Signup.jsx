@@ -1,6 +1,10 @@
 import { useState } from 'react';
-import { UserPlus, User, Mail, Phone, Lock, ArrowRight, CheckCircle } from 'lucide-react';
+import { UserPlus, User, Mail, Phone, Lock, ArrowRight, CheckCircle, Sparkles, Shield } from 'lucide-react';
 import { authAPI } from '../services/api';
+import GradientBackground from './ui/GradientBackground';
+import PremiumCard from './ui/PremiumCard';
+import PremiumButton from './ui/PremiumButton';
+import PremiumInput from './ui/PremiumInput';
 
 const Signup = ({ onSignupSuccess, onSwitchToLogin }) => {
   const [formData, setFormData] = useState({
@@ -22,7 +26,6 @@ const Signup = ({ onSignupSuccess, onSwitchToLogin }) => {
     });
     setError('');
 
-    // Check password strength
     if (name === 'password') {
       checkPasswordStrength(value);
     }
@@ -46,21 +49,18 @@ const Signup = ({ onSignupSuccess, onSwitchToLogin }) => {
       return false;
     }
 
-    // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
       setError('Please enter a valid email address');
       return false;
     }
 
-    // Mobile validation (10 digits)
     const mobileRegex = /^[6-9]\d{9}$/;
     if (!mobileRegex.test(formData.mobile.replace(/[\s\-\+]/g, ''))) {
       setError('Please enter a valid 10-digit mobile number');
       return false;
     }
 
-    // Password validation
     if (formData.password.length < 6) {
       setError('Password must be at least 6 characters long');
       return false;
@@ -107,218 +107,176 @@ const Signup = ({ onSignupSuccess, onSwitchToLogin }) => {
 
   const getPasswordStrengthColor = () => {
     switch (passwordStrength) {
-      case 'weak': return 'bg-red-500';
-      case 'medium': return 'bg-yellow-500';
-      case 'strong': return 'bg-green-500';
-      default: return 'bg-gray-300';
+      case 'weak': return 'bg-red-400';
+      case 'medium': return 'bg-yellow-400';
+      case 'strong': return 'bg-green-400';
+      default: return 'bg-gray-600';
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-primary-100 p-4 py-12">
-      <div className="max-w-md w-full">
-        
-        
-        {/* Header */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-600 rounded-full mb-4">
-            <UserPlus className="w-8 h-8 text-white" />
+    <GradientBackground>
+      <div className="min-h-screen flex items-center justify-center p-4 py-12">
+        <div className="max-w-md w-full animate-scale-in">
+          
+          {/* Header */}
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center justify-center p-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl mb-4 shadow-lg shadow-blue-500/50 animate-glow">
+              <Sparkles className="w-10 h-10 text-white" />
+            </div>
+            <h1 className="text-4xl font-bold text-white mb-2">Create Account</h1>
+            <p className="text-blue-200 text-lg">Start your loan journey in minutes</p>
           </div>
-          <h1 className="text-3xl font-bold text-primary-900 mb-2">Create Account</h1>
-          <p className="text-gray-600">Start your loan journLoanKitin minutes</p>
-        </div>
 
-        {/* Signup Form */}
-        <div className="card">
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Name Field */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Full Name
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <User className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 bg-white text-gray-900 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
-                  placeholder="Enter your full name"
-                />
-              </div>
-            </div>
+          {/* Signup Form */}
+          <PremiumCard variant="glass" className="p-8">
+            <form onSubmit={handleSubmit} className="space-y-4">
+              
+              <PremiumInput
+                label="Full Name"
+                name="name"
+                type="text"
+                value={formData.name}
+                onChange={handleChange}
+                required
+                icon={User}
+                variant="glass"
+                placeholder="Enter your full name"
+              />
 
-            {/* Email Field */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Email Address
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 bg-white text-gray-900 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
-                  placeholder="your.email@example.com"
-                />
-              </div>
-            </div>
+              <PremiumInput
+                label="Email Address"
+                name="email"
+                type="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                icon={Mail}
+                variant="glass"
+                placeholder="your.email@example.com"
+              />
 
-            {/* Mobile Field */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Mobile Number
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Phone className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  type="tel"
-                  name="mobile"
-                  value={formData.mobile}
-                  onChange={handleChange}
-                  required
-                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 bg-white text-gray-900 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
-                  placeholder="10-digit mobile number"
-                  maxLength="10"
-                />
-              </div>
-            </div>
+              <PremiumInput
+                label="Mobile Number"
+                name="mobile"
+                type="tel"
+                value={formData.mobile}
+                onChange={handleChange}
+                required
+                icon={Phone}
+                variant="glass"
+                placeholder="10-digit mobile number"
+                maxLength="10"
+              />
 
-            {/* Password Field */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Password
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  type="password"
+              {/* Password Field with Strength Indicator */}
+              <div>
+                <PremiumInput
+                  label="Password"
                   name="password"
+                  type="password"
                   value={formData.password}
                   onChange={handleChange}
                   required
-                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 bg-white text-gray-900 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+                  icon={Lock}
+                  variant="glass"
                   placeholder="Create a strong password"
                 />
-              </div>
-              {/* Password Strength Indicator */}
-              {formData.password && (
-                <div className="mt-2">
-                  <div className="flex gap-1 mb-1">
-                    <div className={`h-1 flex-1 rounded ${passwordStrength === 'weak' || passwordStrength === 'medium' || passwordStrength === 'strong' ? getPasswordStrengthColor() : 'bg-gray-300'}`}></div>
-                    <div className={`h-1 flex-1 rounded ${passwordStrength === 'medium' || passwordStrength === 'strong' ? getPasswordStrengthColor() : 'bg-gray-300'}`}></div>
-                    <div className={`h-1 flex-1 rounded ${passwordStrength === 'strong' ? getPasswordStrengthColor() : 'bg-gray-300'}`}></div>
-                  </div>
-                  <p className="text-xs text-gray-600">
-                    Password strength: <span className="font-medium capitalize">{passwordStrength || 'Not set'}</span>
-                  </p>
-                </div>
-              )}
-            </div>
-
-            {/* Confirm Password Field */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Confirm Password
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  required
-                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 bg-white text-gray-900 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
-                  placeholder="Re-enter your password"
-                />
-                {formData.confirmPassword && formData.password === formData.confirmPassword && (
-                  <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
-                    <CheckCircle className="h-5 w-5 text-green-500" />
+                {formData.password && (
+                  <div className="mt-2">
+                    <div className="flex gap-1 mb-1">
+                      <div className={`h-1 flex-1 rounded ${passwordStrength === 'weak' || passwordStrength === 'medium' || passwordStrength === 'strong' ? getPasswordStrengthColor() : 'bg-gray-600'}`}></div>
+                      <div className={`h-1 flex-1 rounded ${passwordStrength === 'medium' || passwordStrength === 'strong' ? getPasswordStrengthColor() : 'bg-gray-600'}`}></div>
+                      <div className={`h-1 flex-1 rounded ${passwordStrength === 'strong' ? getPasswordStrengthColor() : 'bg-gray-600'}`}></div>
+                    </div>
+                    <p className="text-xs text-blue-200">
+                      Password strength: <span className="font-medium capitalize text-white">{passwordStrength || 'Not set'}</span>
+                    </p>
                   </div>
                 )}
               </div>
-            </div>
 
-            {/* Error Message */}
-            {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
-                {error}
+              {/* Confirm Password with Check Icon */}
+              <div className="relative">
+                <PremiumInput
+                  label="Confirm Password"
+                  name="confirmPassword"
+                  type="password"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  required
+                  icon={Lock}
+                  variant="glass"
+                  placeholder="Re-enter your password"
+                />
+                {formData.confirmPassword && formData.password === formData.confirmPassword && (
+                  <div className="absolute right-3 top-11">
+                    <CheckCircle className="h-5 w-5 text-green-400" />
+                  </div>
+                )}
               </div>
-            )}
 
-            {/* Terms & Conditions */}
-            <div className="text-xs text-gray-600">
-              By creating an account, you agree to our{' '}
-              <a href="#" className="text-primary-600 hover:underline">Terms of Service</a>
-              {' '}and{' '}
-              <a href="#" className="text-primary-600 hover:underline">Privacy Policy</a>
+              {/* Error Message */}
+              {error && (
+                <div className="backdrop-blur-lg bg-red-500/20 border border-red-400/50 text-red-100 px-4 py-3 rounded-xl text-sm">
+                  {error}
+                </div>
+              )}
+
+              {/* Terms & Conditions */}
+              <div className="text-xs text-blue-200">
+                By creating an account, you agree to our{' '}
+                <a href="#" className="text-white hover:underline font-semibold">Terms of Service</a>
+                {' '}and{' '}
+                <a href="#" className="text-white hover:underline font-semibold">Privacy Policy</a>
+              </div>
+
+              {/* Submit Button */}
+              <PremiumButton
+                type="submit"
+                variant="primary"
+                size="lg"
+                loading={loading}
+                disabled={loading}
+                className="w-full"
+                icon={ArrowRight}
+                iconPosition="right"
+              >
+                {loading ? 'Creating Account...' : 'Create Account'}
+              </PremiumButton>
+            </form>
+
+            {/* Divider */}
+            <div className="mt-6 flex items-center">
+              <div className="flex-1 border-t border-white/20"></div>
+              <span className="px-4 text-sm text-blue-200">or</span>
+              <div className="flex-1 border-t border-white/20"></div>
             </div>
 
-            {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-primary-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-            >
-              {loading ? (
-                <>
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                  <span>Creating Account...</span>
-                </>
-              ) : (
-                <>
-                  <span>Create Account</span>
-                  <ArrowRight className="w-5 h-5" />
-                </>
-              )}
-            </button>
-          </form>
+            {/* Switch to Login */}
+            <div className="mt-6 text-center">
+              <p className="text-blue-200 text-sm">
+                Already have an account?{' '}
+                <button
+                  onClick={onSwitchToLogin}
+                  className="text-white font-semibold hover:text-blue-300 transition-colors"
+                >
+                  Sign In
+                </button>
+              </p>
+            </div>
+          </PremiumCard>
 
-          {/* Divider */}
-          <div className="mt-6 flex items-center">
-            <div className="flex-1 border-t border-gray-300"></div>
-            <span className="px-4 text-sm text-gray-500">or</span>
-            <div className="flex-1 border-t border-gray-300"></div>
-          </div>
-
-          {/* Switch to Login */}
+          {/* Security Badge */}
           <div className="mt-6 text-center">
-            <p className="text-gray-600 text-sm">
-              Already have an account?{' '}
-              <button
-                onClick={onSwitchToLogin}
-                className="text-primary-600 font-medium hover:text-primary-700 transition-colors"
-              >
-                Sign In
-              </button>
-            </p>
+            <div className="inline-flex items-center gap-2 text-blue-200 text-sm">
+              <Shield className="w-4 h-4 text-green-400" />
+              <span>Bank-grade security • 256-bit encryption</span>
+            </div>
           </div>
-        </div>
-
-        {/* Security Info */}
-        <div className="mt-6 text-center">
-          <p className="text-sm text-gray-500">
-            🔒 Bank-grade security • 256-bit encryption
-          </p>
         </div>
       </div>
-    </div>
+    </GradientBackground>
   );
 };
 

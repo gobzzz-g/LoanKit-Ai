@@ -1,6 +1,10 @@
 import { useState } from 'react';
-import { LogIn, Mail, Phone, Lock, ArrowRight } from 'lucide-react';
+import { LogIn, Mail, Lock, ArrowRight, Sparkles, Shield } from 'lucide-react';
 import { authAPI } from '../services/api';
+import GradientBackground from './ui/GradientBackground';
+import PremiumCard from './ui/PremiumCard';
+import PremiumButton from './ui/PremiumButton';
+import PremiumInput from './ui/PremiumInput';
 
 const Login = ({ onLoginSuccess, onSwitchToSignup }) => {
   const [formData, setFormData] = useState({
@@ -27,7 +31,6 @@ const Login = ({ onLoginSuccess, onSwitchToSignup }) => {
       const data = await authAPI.login(formData);
 
       if (data.success) {
-        // Store session token
         localStorage.setItem('sessionToken', data.sessionToken);
         localStorage.setItem('user', JSON.stringify(data.user));
         onLoginSuccess(data.user, data.sessionToken);
@@ -43,120 +46,100 @@ const Login = ({ onLoginSuccess, onSwitchToSignup }) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-primary-100 p-4">
-      <div className="max-w-md w-full">
-        
-        
-        {/* Header */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-600 rounded-full mb-4">
-            <LogIn className="w-8 h-8 text-white" />
+    <GradientBackground>
+      <div className="min-h-screen flex items-center justify-center p-4">
+        <div className="max-w-md w-full animate-scale-in">
+          
+          {/* Header */}
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center justify-center p-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl mb-4 shadow-lg shadow-blue-500/50 animate-glow">
+              <Sparkles className="w-10 h-10 text-white" />
+            </div>
+            <h1 className="text-4xl font-bold text-white mb-2">Welcome Back</h1>
+            <p className="text-blue-200 text-lg">Sign in to continue your loan journey</p>
           </div>
-          <h1 className="text-3xl font-bold text-primary-900 mb-2">Welcome Back</h1>
-          <p className="text-gray-600">Sign in to continue your loan journey</p>
-        </div>
 
-        {/* Login Form */}
-        <div className="card">
-          <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Email/Mobile Field */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Email or Mobile Number
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-gray-400" />
+          {/* Login Form */}
+          <PremiumCard variant="glass" className="p-8">
+            <form onSubmit={handleSubmit} className="space-y-5">
+              
+              <PremiumInput
+                label="Email or Mobile Number"
+                name="emailOrMobile"
+                type="text"
+                value={formData.emailOrMobile}
+                onChange={handleChange}
+                required
+                icon={Mail}
+                variant="glass"
+                placeholder="Enter email or mobile number"
+              />
+
+              <PremiumInput
+                label="Password"
+                name="password"
+                type="password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+                icon={Lock}
+                variant="glass"
+                placeholder="Enter your password"
+              />
+
+              {/* Error Message */}
+              {error && (
+                <div className="backdrop-blur-lg bg-red-500/20 border border-red-400/50 text-red-100 px-4 py-3 rounded-xl text-sm">
+                  {error}
                 </div>
-                <input
-                  type="text"
-                  name="emailOrMobile"
-                  value={formData.emailOrMobile}
-                  onChange={handleChange}
-                  required
-                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 bg-white text-gray-900 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
-                  placeholder="Enter email or mobile number"
-                />
-              </div>
-            </div>
-
-            {/* Password Field */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Password
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  type="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  required
-                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 bg-white text-gray-900 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
-                  placeholder="Enter your password"
-                />
-              </div>
-            </div>
-
-            {/* Error Message */}
-            {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
-                {error}
-              </div>
-            )}
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-primary-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-            >
-              {loading ? (
-                <>
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                  <span>Signing In...</span>
-                </>
-              ) : (
-                <>
-                  <span>Sign In</span>
-                  <ArrowRight className="w-5 h-5" />
-                </>
               )}
-            </button>
-          </form>
 
-          {/* Divider */}
-          <div className="mt-6 flex items-center">
-            <div className="flex-1 border-t border-gray-300"></div>
-            <span className="px-4 text-sm text-gray-500">or</span>
-            <div className="flex-1 border-t border-gray-300"></div>
-          </div>
-
-          {/* Switch to Signup */}
-          <div className="mt-6 text-center">
-            <p className="text-gray-600 text-sm">
-              Don't have an account?{' '}
-              <button
-                onClick={onSwitchToSignup}
-                className="text-primary-600 font-medium hover:text-primary-700 transition-colors"
+              {/* Submit Button */}
+              <PremiumButton
+                type="submit"
+                variant="primary"
+                size="lg"
+                loading={loading}
+                disabled={loading}
+                className="w-full"
+                icon={ArrowRight}
+                iconPosition="right"
               >
-                Create Account
-              </button>
-            </p>
-          </div>
-        </div>
+                {loading ? 'Signing In...' : 'Sign In'}
+              </PremiumButton>
+            </form>
 
-        {/* Demo Info */}
-        <div className="mt-6 text-center">
-          <p className="text-sm text-gray-500">
-            🔒 Your data is secure and encrypted
-          </p>
+            {/* Divider */}
+            <div className="mt-6 flex items-center">
+              <div className="flex-1 border-t border-white/20"></div>
+              <span className="px-4 text-sm text-blue-200">or</span>
+              <div className="flex-1 border-t border-white/20"></div>
+            </div>
+
+            {/* Switch to Signup */}
+            <div className="mt-6 text-center">
+              <p className="text-blue-200 text-sm">
+                Don't have an account?{' '}
+                <button
+                  onClick={onSwitchToSignup}
+                  className="text-white font-semibold hover:text-blue-300 transition-colors"
+                >
+                  Create Account
+                </button>
+              </p>
+            </div>
+          </PremiumCard>
+
+          {/* Security Badge */}
+          <div className="mt-6 text-center">
+            <div className="inline-flex items-center gap-2 text-blue-200 text-sm">
+              <Shield className="w-4 h-4 text-green-400" />
+              <span>Your data is secure and encrypted</span>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </GradientBackground>
   );
 };
 

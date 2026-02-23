@@ -332,27 +332,33 @@ const ChatInterface = ({ sessionData, onBack, user, sessionToken, onLoanDecision
   const quickReplies = getQuickReplies();
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-50 via-white to-blue-50">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900">
+      {/* Animated Background */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-float"></div>
+        <div className="absolute top-40 -left-40 w-80 h-80 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-float" style={{ animationDelay: '1s' }}></div>
+      </div>
+
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-10">
+      <header className="relative z-10 backdrop-blur-lg bg-white/10 border-b border-white/20 shadow-xl sticky top-0">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <button
                 onClick={onBack}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                className="p-2 hover:bg-white/10 rounded-lg transition-colors text-white"
               >
                 <ArrowLeft className="w-5 h-5" />
               </button>
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
-                  <Bot className="w-6 h-6 text-primary-600" />
+                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center shadow-lg">
+                  <Bot className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-lg font-semibold text-primary-900">
+                  <h1 className="text-lg font-semibold text-white">
                     LoanKit AI Assistant
                   </h1>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-blue-200">
                     {user ? `Helping ${user.name}` : 'Personal Loan Assistant'}
                   </p>
                 </div>
@@ -363,10 +369,10 @@ const ChatInterface = ({ sessionData, onBack, user, sessionToken, onLoanDecision
               <button
                 onClick={handleDownloadSanctionLetter}
                 disabled={loading}
-                className="btn-primary flex items-center gap-2"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white px-4 py-2 rounded-xl font-semibold shadow-lg shadow-green-500/50 hover:shadow-green-500/70 hover:scale-105 transition-all disabled:opacity-50"
               >
                 <Download className="w-4 h-4" />
-                Download Sanction Letter
+                Download Letter
               </button>
             )}
           </div>
@@ -374,10 +380,12 @@ const ChatInterface = ({ sessionData, onBack, user, sessionToken, onLoanDecision
       </header>
 
       {/* Progress Tracker */}
-      <ProgressTracker currentStage={session.stage} session={session} />
+      <div className="relative z-10">
+        <ProgressTracker currentStage={session.stage} session={session} />
+      </div>
 
       {/* Chat Messages */}
-      <div className="flex-1 overflow-y-auto bg-gray-50">
+      <div className="relative z-10 flex-1 overflow-y-auto">
         <div className="container mx-auto px-4 py-8 max-w-4xl">
           <div className="space-y-6">
             {messages.map((message) => (
@@ -386,10 +394,10 @@ const ChatInterface = ({ sessionData, onBack, user, sessionToken, onLoanDecision
 
             {typing && (
               <div className="flex items-start gap-3 animate-slide-up">
-                <div className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center flex-shrink-0">
-                  <Bot className="w-5 h-5 text-primary-600" />
+                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center flex-shrink-0 shadow-lg">
+                  <Bot className="w-5 h-5 text-white" />
                 </div>
-                <div className="chat-bubble chat-bubble-agent">
+                <div className="backdrop-blur-lg bg-white/10 border border-white/20 rounded-2xl px-4 py-3 shadow-xl">
                   <div className="typing-indicator flex gap-1">
                     <span></span>
                     <span></span>
@@ -401,12 +409,12 @@ const ChatInterface = ({ sessionData, onBack, user, sessionToken, onLoanDecision
 
             {/* Document Upload Section */}
             {needsDocumentUpload && (
-              <div className="card animate-slide-up">
+              <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-6 animate-slide-up shadow-xl">
                 <div className="flex items-center gap-2 mb-4">
-                  <Upload className="w-5 h-5 text-primary-600" />
-                  <h3 className="font-semibold text-gray-900">Document Verification Required</h3>
+                  <Upload className="w-5 h-5 text-blue-300" />
+                  <h3 className="font-semibold text-white">Document Verification Required</h3>
                 </div>
-                <p className="text-sm text-gray-600 mb-4">
+                <p className="text-sm text-blue-200 mb-4">
                   Since your loan amount of ₹{session.loanRequest?.amount?.toLocaleString('en-IN')} exceeds your pre-approved limit of ₹{session.customer?.preApprovedLimit?.toLocaleString('en-IN')}, please upload the required documents for verification.
                 </p>
                 <DocumentUpload
@@ -424,16 +432,16 @@ const ChatInterface = ({ sessionData, onBack, user, sessionToken, onLoanDecision
 
       {/* Quick Replies */}
       {quickReplies.length > 0 && !typing && (
-        <div className="bg-white border-t border-gray-200 py-3">
+        <div className="relative z-10 backdrop-blur-lg bg-white/5 border-t border-white/20 py-3">
           <div className="container mx-auto px-4 max-w-4xl">
-            <p className="text-sm text-gray-600 mb-2">Quick replies:</p>
+            <p className="text-sm text-blue-200 mb-2">Quick replies:</p>
             <div className="flex flex-wrap gap-2">
               {quickReplies.map((reply, index) => (
                 <button
                   key={index}
                   onClick={() => handleQuickReply(reply)}
                   disabled={loading}
-                  className="px-4 py-2 bg-primary-50 text-primary-700 rounded-full text-sm font-medium hover:bg-primary-100 transition-colors disabled:opacity-50"
+                  className="px-4 py-2 backdrop-blur-lg bg-white/10 border border-white/20 text-white rounded-full text-sm font-medium hover:bg-white/20 transition-all disabled:opacity-50 hover:scale-105"
                 >
                   {reply}
                 </button>
@@ -444,7 +452,7 @@ const ChatInterface = ({ sessionData, onBack, user, sessionToken, onLoanDecision
       )}
 
       {/* Input Area */}
-      <div className="bg-white border-t border-gray-200 shadow-lg">
+      <div className="relative z-10 backdrop-blur-lg bg-white/10 border-t border-white/20 shadow-2xl">
         <div className="container mx-auto px-4 py-4 max-w-4xl">
           <form onSubmit={handleSendMessage} className="flex gap-3">
             <input
@@ -453,12 +461,12 @@ const ChatInterface = ({ sessionData, onBack, user, sessionToken, onLoanDecision
               onChange={(e) => setInputMessage(e.target.value)}
               placeholder="Type your message..."
               disabled={loading}
-              className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent disabled:bg-gray-100"
+              className="flex-1 px-4 py-3 backdrop-blur-lg bg-white/10 border border-white/20 text-white placeholder-blue-200/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:border-blue-400/50 disabled:opacity-50 transition-all"
             />
             <button
               type="submit"
               disabled={loading || !inputMessage.trim()}
-              className="btn-primary flex items-center gap-2 px-6"
+              className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg shadow-blue-500/50 hover:shadow-blue-500/70 hover:scale-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <Loader2 className="w-5 h-5 animate-spin" />

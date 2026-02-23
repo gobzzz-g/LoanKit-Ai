@@ -61,5 +61,63 @@
     "stage": "SALES",
     "documentsUploaded": [],
     "startTime": "2026-02-23T17:09:33.411Z"
+  },
+  {
+    "id": "615ad25d-6197-4e29-9920-7149e625ff67",
+    "customer": {
+      "customerId": "CUSTMKSWGDJP4DMEB",
+      "name": "Customer",
+      "phone": null,
+      "email": null,
+      "address": null,
+      "pan": null,
+      "creditScore": 700,
+      "preApprovedLimit": 300000,
+      "monthlyIncome": 50000,
+      "employmentType": "Salaried",
+      "company": null,
+      "kycVerified": false,
+      "existingLoans": []
+    },
+    "conversationHistory": [
+      {
+        "sender": "user",
+        "text": "Hello",
+        "timestamp": "2026-02-23T18:09:05.882Z"
+      },
+      {
+        "sender": "agent",
+        "text": "Hello Customer! 👋 Welcome to our personal loan platform. I'm your AI loan Approver, here to help you get the best loan offer tailored to your needs.\n\nBased on your profile, you're eligible for loans up to ₹3,00,000. How much would you like to borrow today?",
+        "timestamp": "2026-02-23T18:09:05.883Z",
+        "mindset": "EXPLORING",
+        "intent": {
+          "loanPurpose": null,
+          "urgency": "low",
+          "emiComfort": null,
+          "financialConfidence": "neutral",
+          "concerns": [],
+          "readinessScore": 0
+        }
+      }
+    ],
+    "loanRequest": {
+      "amount": null,
+      "tenure": null,
+      "purpose": null
+    },
+    "verificationStatus": null,
+    "underwritingResult": null,
+    "customerIntent": {
+      "loanPurpose": null,
+      "urgency": "low",
+      "emiComfort": null,
+      "financialConfidence": "neutral",
+      "concerns": [],
+      "readinessScore": 0
+    },
+    "customerMindset": "EXPLORING",
+    "stage": "SALES",
+    "documentsUploaded": [],
+    "startTime": "2026-02-23T18:09:05.876Z"
   }
 ]

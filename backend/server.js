@@ -22,15 +22,35 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
+// request logging
+app.use((req, res, next) => {
+  console.log(`Incoming ${req.method} request to ${req.url}`);
+  console.log(`Origin: ${req.headers.origin}`);
+  next();
+});
+
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'https://loankit-ai-demo.web.app',
+  'https://loankit-ai-demo.firebaseapp.com',
+  'https://web-production-a722.up.railway.app',
+  'https://loankit-ai-production.up.railway.app'
+];
+
 app.use(cors({
-  origin: [
-    'http://localhost:5173',
-    'http://localhost:5174',
-    'https://loankit-ai-demo.web.app',
-    'https://loankit-ai-demo.firebaseapp.com',
-    'https://web-production-a722.up.railway.app',
-    'https://loankit-ai-production.up.railway.app'
-  ],
+  origin: function (origin, callback) {
+    // limit null origins (like server-to-server or postman)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      return callback(null, true);
+    }
+
+    // For debugging/hackathon: Log and allow usually blocked origins, but warn
+    console.log(`⚠️ Warning: Origin ${origin} not in allowed list. Allowing for testing.`);
+    return callback(null, true);
+  },
   credentials: true
 }));
 app.use(express.json());

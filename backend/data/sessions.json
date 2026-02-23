@@ -1,19 +1,65 @@
-{
-  "sessions": {
-    "815548189843f2f42bf1d23f9f0645275764da94c460440485105323cb6242d9": {
-      "customerId": "CUSTMKM5RLL7OHSWS",
-      "createdAt": "2026-01-24T23:07:08.461Z",
-      "expiresAt": "2026-01-31T23:07:08.461Z"
-    },
-    "bf2d79bcec55d82e326bf8d20ec157a92ccc2a8bba84f2f028ee98ee5838827f": {
+[
+  {
+    "customerId": "CUSTMKSWGDJP4DMEB",
+    "createdAt": "2026-02-23T16:45:50.401Z",
+    "expiresAt": "2026-03-02T16:45:50.401Z"
+  },
+  {
+    "id": "da419e51-d107-47ba-9797-6bb47f6ed2cb",
+    "customer": {
       "customerId": "CUSTMKSWGDJP4DMEB",
-      "createdAt": "2026-01-24T23:08:59.294Z",
-      "expiresAt": "2026-01-31T23:08:59.294Z"
+      "name": "Customer",
+      "phone": null,
+      "email": null,
+      "address": null,
+      "pan": null,
+      "creditScore": 700,
+      "preApprovedLimit": 300000,
+      "monthlyIncome": 50000,
+      "employmentType": "Salaried",
+      "company": null,
+      "kycVerified": false,
+      "existingLoans": []
     },
-    "04269f833318b3324fb075af4a61f2fe542b2fee130165ef796f1499ce068a51": {
-      "customerId": "CUSTMKSWGDJP4DMEB",
-      "createdAt": "2026-01-31T06:53:35.131Z",
-      "expiresAt": "2026-02-07T06:53:35.131Z"
-    }
+    "conversationHistory": [
+      {
+        "sender": "user",
+        "text": "Hello",
+        "timestamp": "2026-02-23T17:09:33.417Z"
+      },
+      {
+        "sender": "agent",
+        "text": "Hello Customer! 👋 Welcome to our personal loan platform. I'm your AI loan Approver, here to help you get the best loan offer tailored to your needs.\n\nBased on your profile, you're eligible for loans up to ₹3,00,000. How much would you like to borrow today?",
+        "timestamp": "2026-02-23T17:09:33.428Z",
+        "mindset": "EXPLORING",
+        "intent": {
+          "loanPurpose": null,
+          "urgency": "low",
+          "emiComfort": null,
+          "financialConfidence": "neutral",
+          "concerns": [],
+          "readinessScore": 0
+        }
+      }
+    ],
+    "loanRequest": {
+      "amount": null,
+      "tenure": null,
+      "purpose": null
+    },
+    "verificationStatus": null,
+    "underwritingResult": null,
+    "customerIntent": {
+      "loanPurpose": null,
+      "urgency": "low",
+      "emiComfort": null,
+      "financialConfidence": "neutral",
+      "concerns": [],
+      "readinessScore": 0
+    },
+    "customerMindset": "EXPLORING",
+    "stage": "SALES",
+    "documentsUploaded": [],
+    "startTime": "2026-02-23T17:09:33.411Z"
   }
-}
+]

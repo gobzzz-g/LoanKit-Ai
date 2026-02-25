@@ -88,12 +88,6 @@ const LandingPage = ({ onStartSession, user, onLogout, onGoToDashboard }) => {
         {/* Hero Section */}
         <div className="container mx-auto px-4 py-16 md:py-24">
           <header className="text-center mb-20 animate-fade-in">
-            <div className="flex items-center justify-center gap-3 mb-6">
-              <div className="p-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl shadow-lg shadow-blue-500/50 animate-glow">
-                <Sparkles className="w-8 h-8 text-white" />
-              </div>
-            </div>
-            
             <h1 className="text-5xl md:text-7xl font-extrabold mb-6 leading-tight">
               <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent animate-slide-down">
                 LoanKit AI
@@ -289,10 +283,10 @@ const LandingPage = ({ onStartSession, user, onLogout, onGoToDashboard }) => {
                       </div>
                       
                       <div className="pt-3 mt-3 border-t border-white/10">
-                        <span className={`text-xs font-semibold px-3 py-1.5 rounded-full block text-center ${
-                          customer.scenario === 'Instant Approval' ? 'bg-green-500/20 text-green-300' :
-                          customer.scenario === 'Conditional Approval' ? 'bg-yellow-500/20 text-yellow-300' :
-                            'bg-red-500/20 text-red-300'
+                        <span className={`text-xs font-bold px-3 py-1.5 rounded-full block text-center shadow-lg ${
+                          customer.scenario === 'Instant Approval' ? 'bg-green-500 text-white' :
+                          customer.scenario === 'Conditional Approval' ? 'bg-yellow-500 text-gray-900' :
+                            'bg-red-500 text-white'
                         }`}>
                           {customer.scenario}
                         </span>

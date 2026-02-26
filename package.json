@@ -1,15 +1,23 @@
 {
   "name": "loankit-ai",
-  "version": "1.0.0",
-  "description": "LoanKit AI - Agentic AI Personal Loan Platform",
+  "version": "2.0.0",
+  "description": "LoanKit AI - Agentic AI Personal Loan Platform (Firebase Edition)",
+  "type": "module",
   "scripts": {
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
     "dev:backend": "cd backend && npm start",
     "dev:frontend": "cd frontend && npm run dev",
-    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install",
-    "start": "cd backend && npm start"
+    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install && cd ../functions && npm install",
+    "start": "cd backend && npm start",
+    "deploy": "firebase deploy",
+    "deploy:functions": "firebase deploy --only functions",
+    "deploy:hosting": "npm run build:frontend && firebase deploy --only hosting",
+    "build:frontend": "cd frontend && npm run build",
+    "emulate": "firebase emulators:start",
+    "logs": "firebase functions:log --only api",
+    "verify": "node verify-migration.js"
   },
-  "keywords": ["ai", "loans", "fintech", "agentic-ai"],
+  "keywords": ["ai", "loans", "fintech", "agentic-ai", "firebase", "cloud-functions"],
   "author": "LoanKitTechathon Team",
   "license": "MIT",
   "devDependencies": {

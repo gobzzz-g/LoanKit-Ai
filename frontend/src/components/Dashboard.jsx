@@ -1,13 +1,37 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { TrendingUp, XCircle, Clock, CheckCircle, FileText, Calendar, DollarSign, ArrowLeft, Sparkles, Download } from 'lucide-react';
-import { pdfAPI } from '../services/api';
+import { pdfAPI, authAPI } from '../services/api';
 import GradientBackground from './ui/GradientBackground';
 import PremiumCard from './ui/PremiumCard';
 import PremiumButton from './ui/PremiumButton';
 
-const Dashboard = ({ user, onStartNewApplication, onViewLoan, onBack }) => {
+const Dashboard = ({ user, onStartNewApplication, onViewLoan, onBack, onUserUpdate }) => {
   const [activeTab, setActiveTab] = useState('overview');
   const [downloadingLoan, setDownloadingLoan] = useState(null);
+  const [refreshing, setRefreshing] = useState(false);
+
+  // Refresh user data when component mounts to ensure latest loan data
+  useEffect(() => {
+    const refreshUserData = async () => {
+      setRefreshing(true);
+      try {
+        const sessionToken = localStorage.getItem('sessionToken');
+        if (sessionToken) {
+          const data = await authAPI.getCurrentUser(sessionToken);
+          if (data.success && onUserUpdate) {
+            console.log('📊 Dashboard: Refreshed user data, found', data.user?.loanHistory?.length, 'loans');
+            onUserUpdate(data.user);
+          }
+        }
+      } catch (error) {
+        console.error('Failed to refresh user data in dashboard:', error);
+      } finally {
+        setRefreshing(false);
+      }
+    };
+    
+    refreshUserData();
+  }, []); // Run once on mount
 
   const loanApplications = user?.loanHistory || [];
 
@@ -187,9 +211,9 @@ const Dashboard = ({ user, onStartNewApplication, onViewLoan, onBack }) => {
                   </div>
                 ) : (
                   <div className="space-y-4">
-                    {loanApplications.map((loan, index) => (
+                    {loanApplications.map((loan) => (
                       <PremiumCard
-                        key={index}
+                        key={loan.loanId || `loan-${loan.appliedAt}`}
                         variant="glassDark"
                         className="p-6 hover:bg-white/15"
                       >

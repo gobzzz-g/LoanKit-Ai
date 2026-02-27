@@ -132,6 +132,7 @@ function App() {
   const handleGoToDashboard = async () => {
     // Refresh user data to get latest loan history
     console.log('📂 Opening dashboard, refreshing user data...');
+    setCurrentView('dashboard'); // Set view immediately for faster navigation
     try {
       const { authAPI } = await import('./services/api');
       const data = await authAPI.getCurrentUser(sessionToken);
@@ -144,7 +145,11 @@ function App() {
     } catch (error) {
       console.error('Failed to refresh user data:', error);
     }
-    setCurrentView('dashboard');
+  };
+
+  const handleUserUpdate = (updatedUser) => {
+    setUser(updatedUser);
+    localStorage.setItem('user', JSON.stringify(updatedUser));
   };
 
   const handleBackFromDashboard = () => {
@@ -218,6 +223,7 @@ function App() {
           onStartNewApplication={handleStartSession}
           onBack={handleBackFromDashboard}
           onViewLoan={(loan) => console.log('View loan:', loan)}
+          onUserUpdate={handleUserUpdate}
         />
       )}
       

@@ -341,24 +341,24 @@ const ChatInterface = ({ sessionData, onBack, user, sessionToken, onLoanDecision
 
       {/* Header */}
       <header className="relative z-10 backdrop-blur-lg bg-white/10 border-b border-white/20 shadow-xl sticky top-0">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
+        <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-2 sm:gap-4 w-full sm:w-auto">
               <button
                 onClick={onBack}
-                className="p-2 hover:bg-white/10 rounded-lg transition-colors text-white"
+                className="p-2 hover:bg-white/10 rounded-lg transition-colors text-white flex-shrink-0"
               >
                 <ArrowLeft className="w-5 h-5" />
               </button>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center shadow-lg">
+              <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center shadow-lg flex-shrink-0">
                   <Bot className="w-6 h-6 text-white" />
                 </div>
-                <div>
-                  <h1 className="text-lg font-semibold text-white">
+                <div className="min-w-0">
+                  <h1 className="text-base sm:text-lg font-semibold text-white truncate">
                     LoanKit AI Assistant
                   </h1>
-                  <p className="text-sm text-blue-200">
+                  <p className="text-xs sm:text-sm text-blue-200 truncate">
                     {user ? `Helping ${user.name}` : 'Personal Loan Assistant'}
                   </p>
                 </div>
@@ -369,10 +369,11 @@ const ChatInterface = ({ sessionData, onBack, user, sessionToken, onLoanDecision
               <button
                 onClick={handleDownloadSanctionLetter}
                 disabled={loading}
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white px-4 py-2 rounded-xl font-semibold shadow-lg shadow-green-500/50 hover:shadow-green-500/70 hover:scale-105 transition-all disabled:opacity-50"
+                className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white px-3 sm:px-4 py-2 rounded-xl font-semibold shadow-lg shadow-green-500/50 hover:shadow-green-500/70 hover:scale-105 transition-all disabled:opacity-50 text-sm w-full sm:w-auto"
               >
                 <Download className="w-4 h-4" />
-                Download Letter
+                <span className="hidden sm:inline">Download Letter</span>
+                <span className="sm:hidden">Download</span>
               </button>
             )}
           </div>
@@ -386,8 +387,8 @@ const ChatInterface = ({ sessionData, onBack, user, sessionToken, onLoanDecision
 
       {/* Chat Messages */}
       <div className="relative z-10 flex-1 overflow-y-auto">
-        <div className="container mx-auto px-4 py-8 max-w-4xl">
-          <div className="space-y-6">
+        <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8 max-w-4xl">
+          <div className="space-y-4 sm:space-y-6">
             {messages.map((message) => (
               <MessageBubble key={message.id} message={message} />
             ))}
@@ -433,15 +434,15 @@ const ChatInterface = ({ sessionData, onBack, user, sessionToken, onLoanDecision
       {/* Quick Replies */}
       {quickReplies.length > 0 && !typing && (
         <div className="relative z-10 backdrop-blur-lg bg-white/5 border-t border-white/20 py-3">
-          <div className="container mx-auto px-4 max-w-4xl">
-            <p className="text-sm text-blue-200 mb-2">Quick replies:</p>
+          <div className="container mx-auto px-3 sm:px-4 max-w-4xl">
+            <p className="text-xs sm:text-sm text-blue-200 mb-2">Quick replies:</p>
             <div className="flex flex-wrap gap-2">
               {quickReplies.map((reply, index) => (
                 <button
                   key={index}
                   onClick={() => handleQuickReply(reply)}
                   disabled={loading}
-                  className="px-4 py-2 backdrop-blur-lg bg-white/10 border border-white/20 text-white rounded-full text-sm font-medium hover:bg-white/20 transition-all disabled:opacity-50 hover:scale-105"
+                  className="px-3 sm:px-4 py-2 backdrop-blur-lg bg-white/10 border border-white/20 text-white rounded-full text-xs sm:text-sm font-medium hover:bg-white/20 transition-all disabled:opacity-50 hover:scale-105"
                 >
                   {reply}
                 </button>
@@ -453,20 +454,20 @@ const ChatInterface = ({ sessionData, onBack, user, sessionToken, onLoanDecision
 
       {/* Input Area */}
       <div className="relative z-10 backdrop-blur-lg bg-white/10 border-t border-white/20 shadow-2xl">
-        <div className="container mx-auto px-4 py-4 max-w-4xl">
-          <form onSubmit={handleSendMessage} className="flex gap-3">
+        <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4 max-w-4xl">
+          <form onSubmit={handleSendMessage} className="flex gap-2 sm:gap-3">
             <input
               type="text"
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               placeholder="Type your message..."
               disabled={loading}
-              className="flex-1 px-4 py-3 backdrop-blur-lg bg-white/10 border border-white/20 text-white placeholder-blue-200/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:border-blue-400/50 disabled:opacity-50 transition-all"
+              className="flex-1 px-3 sm:px-4 py-2 sm:py-3 backdrop-blur-lg bg-white/10 border border-white/20 text-white placeholder-blue-200/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:border-blue-400/50 disabled:opacity-50 transition-all text-sm sm:text-base"
             />
             <button
               type="submit"
               disabled={loading || !inputMessage.trim()}
-              className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg shadow-blue-500/50 hover:shadow-blue-500/70 hover:scale-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="inline-flex items-center justify-center bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-semibold shadow-lg shadow-blue-500/50 hover:shadow-blue-500/70 hover:scale-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
             >
               {loading ? (
                 <Loader2 className="w-5 h-5 animate-spin" />

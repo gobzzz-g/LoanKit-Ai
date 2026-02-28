@@ -111,7 +111,7 @@ const Dashboard = ({ user, onStartNewApplication, onViewLoan, onBack, onUserUpda
         <div className="container mx-auto max-w-7xl">
           
           {/* Header */}
-          <div className="mb-8">
+          <div className="mb-6 sm:mb-8">
             <PremiumButton
               onClick={onBack}
               variant="ghost"
@@ -123,33 +123,33 @@ const Dashboard = ({ user, onStartNewApplication, onViewLoan, onBack, onUserUpda
               Back to Home
             </PremiumButton>
 
-            <div className="flex items-center gap-3 mb-3">
-              <div className="p-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl shadow-lg shadow-blue-500/50">
-                <Sparkles className="w-8 h-8 text-white" />
+            <div className="flex items-center gap-2 sm:gap-3 mb-3">
+              <div className="p-2 sm:p-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl shadow-lg shadow-blue-500/50 flex-shrink-0">
+                <Sparkles className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
               </div>
-              <div>
-                <h1 className="text-3xl md:text-4xl font-bold text-white">LoanKit AI Dashboard</h1>
-                <p className="text-blue-200">Track and manage your loan applications</p>
+              <div className="min-w-0">
+                <h1 className="text-xl sm:text-3xl md:text-4xl font-bold text-white">LoanKit AI Dashboard</h1>
+                <p className="text-sm sm:text-base text-blue-200">Track and manage your loan applications</p>
               </div>
             </div>
           </div>
 
           {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6 mb-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6 mb-6 sm:mb-10">
             {[
               { label: 'Total Applications', value: stats.totalApplications, icon: FileText, gradient: 'from-blue-400 to-blue-600' },
               { label: 'Approved', value: stats.approved, icon: CheckCircle, gradient: 'from-green-400 to-green-600' },
               { label: 'Pending', value: stats.pending, icon: Clock, gradient: 'from-yellow-400 to-yellow-600' },
               { label: 'Rejected', value: stats.rejected, icon: XCircle, gradient: 'from-red-400 to-red-600' }
             ].map((stat, index) => (
-              <PremiumCard key={index} variant="glass" className="p-6 hover:scale-105" hover>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-blue-200 mb-1">{stat.label}</p>
-                    <p className="text-3xl font-bold text-white">{stat.value}</p>
+              <PremiumCard key={index} variant="glass" className="p-3 sm:p-6 hover:scale-105" hover>
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0">
+                  <div className="w-full sm:w-auto">
+                    <p className="text-xs sm:text-sm text-blue-200 mb-1">{stat.label}</p>
+                    <p className="text-2xl sm:text-3xl font-bold text-white">{stat.value}</p>
                   </div>
-                  <div className={`w-12 h-12 bg-gradient-to-r ${stat.gradient} rounded-xl flex items-center justify-center shadow-lg`}>
-                    <stat.icon className="w-6 h-6 text-white" />
+                  <div className={`w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r ${stat.gradient} rounded-xl flex items-center justify-center shadow-lg`}>
+                    <stat.icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                   </div>
                 </div>
               </PremiumCard>
@@ -171,12 +171,12 @@ const Dashboard = ({ user, onStartNewApplication, onViewLoan, onBack, onUserUpda
           </div>
 
           {/* Tabs */}
-          <PremiumCard variant="glass" className="p-6">
-            <div className="border-b border-white/20 mb-6">
-              <div className="flex gap-6">
+          <PremiumCard variant="glass" className="p-4 sm:p-6">
+            <div className="border-b border-white/20 mb-4 sm:mb-6">
+              <div className="flex gap-3 sm:gap-6">
                 <button
                   onClick={() => setActiveTab('overview')}
-                  className={`pb-4 px-2 font-medium transition-colors ${
+                  className={`pb-3 sm:pb-4 px-1 sm:px-2 font-medium transition-colors text-sm sm:text-base ${
                     activeTab === 'overview'
                       ? 'text-white border-b-2 border-blue-400'
                       : 'text-blue-200 hover:text-white'
@@ -186,7 +186,7 @@ const Dashboard = ({ user, onStartNewApplication, onViewLoan, onBack, onUserUpda
                 </button>
                 <button
                   onClick={() => setActiveTab('history')}
-                  className={`pb-4 px-2 font-medium transition-colors ${
+                  className={`pb-3 sm:pb-4 px-1 sm:px-2 font-medium transition-colors text-sm sm:text-base ${
                     activeTab === 'history'
                       ? 'text-white border-b-2 border-blue-400'
                       : 'text-blue-200 hover:text-white'
@@ -215,16 +215,16 @@ const Dashboard = ({ user, onStartNewApplication, onViewLoan, onBack, onUserUpda
                       <PremiumCard
                         key={loan.loanId || `loan-${loan.appliedAt}`}
                         variant="glassDark"
-                        className="p-6 hover:bg-white/15"
+                        className="p-4 sm:p-6 hover:bg-white/15"
                       >
-                        <div className="flex items-start justify-between mb-6">
-                          <div className="flex items-center gap-3">
-                            {getStatusIcon(loan.status)}
-                            <div>
-                              <h3 className="font-semibold text-white">
+                        <div className="flex flex-col sm:flex-row items-start justify-between mb-4 sm:mb-6 gap-3">
+                          <div className="flex items-start gap-2 sm:gap-3 min-w-0 flex-1">
+                            <div className="flex-shrink-0 mt-0.5">{getStatusIcon(loan.status)}</div>
+                            <div className="min-w-0 flex-1">
+                              <h3 className="font-semibold text-white text-sm sm:text-base break-words">
                                 Loan Application #{loan.loanId || `LOAN${Date.now().toString().slice(-12)}`}
                               </h3>
-                              <p className="text-sm text-blue-200 mt-1">
+                              <p className="text-xs sm:text-sm text-blue-200 mt-1">
                                 {new Date(loan.appliedAt || Date.now()).toLocaleDateString('en-GB', {
                                   day: 'numeric',
                                   month: 'short',
@@ -237,33 +237,33 @@ const Dashboard = ({ user, onStartNewApplication, onViewLoan, onBack, onUserUpda
                               </p>
                             </div>
                           </div>
-                          <span className={`px-3 py-1 rounded-full text-sm font-medium border ${getStatusColor(loan.status)}`}>
+                          <span className={`px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium border ${getStatusColor(loan.status)} whitespace-nowrap flex-shrink-0`}>
                             {loan.status}
                           </span>
                         </div>
 
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4 md:gap-6">
                           <div>
                             <p className="text-xs text-blue-200/70 mb-1">Loan Amount</p>
-                            <p className="font-semibold text-white">
+                            <p className="font-semibold text-white text-sm sm:text-base">
                               ₹{loan.amount?.toLocaleString('en-IN') || 'N/A'}
                             </p>
                           </div>
                           <div>
                             <p className="text-xs text-blue-200/70 mb-1">Tenure</p>
-                            <p className="font-semibold text-white">
+                            <p className="font-semibold text-white text-sm sm:text-base">
                               {loan.tenure} months
                             </p>
                           </div>
                           <div>
                             <p className="text-xs text-blue-200/70 mb-1">Interest Rate</p>
-                            <p className="font-semibold text-white">
+                            <p className="font-semibold text-white text-sm sm:text-base">
                               {loan.interestRate}% p.a.
                             </p>
                           </div>
                           <div>
                             <p className="text-xs text-blue-200/70 mb-1">Monthly EMI</p>
-                            <p className="font-semibold text-white">
+                            <p className="font-semibold text-white text-sm sm:text-base">
                               ₹{loan.emi?.toLocaleString('en-IN') || 'N/A'}
                             </p>
                           </div>

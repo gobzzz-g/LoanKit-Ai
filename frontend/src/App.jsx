@@ -219,6 +219,7 @@ function App() {
       
       {currentView === 'dashboard' && (
         <Dashboard
+          key={`dashboard-${user?.loanHistory?.length || 0}`}
           user={user}
           onStartNewApplication={handleStartSession}
           onBack={handleBackFromDashboard}

@@ -9,8 +9,15 @@ const Dashboard = ({ user, onStartNewApplication, onViewLoan, onBack, onUserUpda
   const [activeTab, setActiveTab] = useState('overview');
   const [downloadingLoan, setDownloadingLoan] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
+  const [localUser, setLocalUser] = useState(user);
 
-  // Refresh user data when component mounts to ensure latest loan data
+  // Update local user state when prop changes
+  useEffect(() => {
+    console.log('📊 Dashboard: User prop updated, loan count:', user?.loanHistory?.length);
+    setLocalUser(user);
+  }, [user]);
+
+  // Refresh user data when component mounts and periodically check for updates
   useEffect(() => {
     const refreshUserData = async () => {
       setRefreshing(true);
@@ -21,6 +28,7 @@ const Dashboard = ({ user, onStartNewApplication, onViewLoan, onBack, onUserUpda
           if (data.success && onUserUpdate) {
             console.log('📊 Dashboard: Refreshed user data, found', data.user?.loanHistory?.length, 'loans');
             onUserUpdate(data.user);
+            setLocalUser(data.user);
           }
         }
       } catch (error) {
@@ -30,10 +38,16 @@ const Dashboard = ({ user, onStartNewApplication, onViewLoan, onBack, onUserUpda
       }
     };
     
+    // Initial refresh on mount
     refreshUserData();
-  }, []); // Run once on mount
+    
+    // Set up interval to refresh every 30 seconds while dashboard is open
+    const intervalId = setInterval(refreshUserData, 30000);
+    
+    return () => clearInterval(intervalId);
+  }, []); // Run once on mount and cleanup on unmount
 
-  const loanApplications = user?.loanHistory || [];
+  const loanApplications = localUser?.loanHistory || [];
 
   const stats = {
     totalApplications: loanApplications.length,
@@ -72,7 +86,7 @@ const Dashboard = ({ user, onStartNewApplication, onViewLoan, onBack, onUserUpda
     setDownloadingLoan(loan.loanId);
     try {
       const blob = await pdfAPI.generateSanctionLetter(
-        user,
+        localUser,
         {
           amount: loan.amount,
           tenure: loan.tenure,
@@ -84,7 +98,7 @@ const Dashboard = ({ user, onStartNewApplication, onViewLoan, onBack, onUserUpda
           tenure: loan.tenure,
           interestRate: loan.interestRate,
           proposedEMI: loan.emi,
-          creditScore: loan.creditScore || user.creditScore || 750,
+          creditScore: loan.creditScore || localUser.creditScore || 750,
           riskCategory: loan.riskCategory || 'LOW'
         }
       );

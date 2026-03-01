@@ -339,6 +339,9 @@ Type "documents uploaded" when ready, or "skip" to proceed without documents (ma
     if (result.verified) {
       this.session.stage = 'UNDERWRITING';
       
+      // Save loan status before verification completion
+      console.log('💾 Saving loan application before underwriting...');
+      
       // Return verification success message
       // The frontend will auto-trigger underwriting
       return `✅ Verification complete! Your KYC details are confirmed.

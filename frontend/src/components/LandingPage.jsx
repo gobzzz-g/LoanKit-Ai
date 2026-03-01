@@ -381,7 +381,7 @@ const LandingPage = ({ onStartSession, user, onLogout, onGoToDashboard }) => {
           {/* Footer */}
           <footer className="border-t border-white/10 pt-12">
             <div className="max-w-6xl mx-auto">
-              <div className="grid md:grid-cols-4 gap-8 mb-8">
+              <div className="mb-8">
                 <div>
                   <div className="flex items-center gap-2 mb-4">
                     <div className="p-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg">
@@ -392,36 +392,6 @@ const LandingPage = ({ onStartSession, user, onLogout, onGoToDashboard }) => {
                   <p className="text-blue-200/70 text-sm">
                     Smart lending powered by artificial intelligence. Making loans accessible to everyone.
                   </p>
-                </div>
-
-                <div>
-                  <h4 className="text-white font-semibold mb-3">Product</h4>
-                  <ul className="space-y-2 text-sm text-blue-200/70">
-                    <li><a href="#" className="hover:text-white transition-colors">Personal Loans</a></li>
-                    <li><a href="#" className="hover:text-white transition-colors">Business Loans</a></li>
-                    <li><a href="#" className="hover:text-white transition-colors">Pricing</a></li>
-                    <li><a href="#" className="hover:text-white transition-colors">Features</a></li>
-                  </ul>
-                </div>
-
-                <div>
-                  <h4 className="text-white font-semibold mb-3">Company</h4>
-                  <ul className="space-y-2 text-sm text-blue-200/70">
-                    <li><a href="#" className="hover:text-white transition-colors">About Us</a></li>
-                    <li><a href="#" className="hover:text-white transition-colors">Careers</a></li>
-                    <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
-                    <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
-                  </ul>
-                </div>
-
-                <div>
-                  <h4 className="text-white font-semibold mb-3">Legal</h4>
-                  <ul className="space-y-2 text-sm text-blue-200/70">
-                    <li><a href="#" className="hover:text-white transition-colors">Privacy Policy</a></li>
-                    <li><a href="#" className="hover:text-white transition-colors">Terms of Service</a></li>
-                    <li><a href="#" className="hover:text-white transition-colors">Compliance</a></li>
-                    <li><a href="#" className="hover:text-white transition-colors">Security</a></li>
-                  </ul>
                 </div>
               </div>
 

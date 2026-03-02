@@ -1,1 +1,40 @@
 /* Additional custom styles if needed */
+
+/* Support Chat Bot Animations */
+@keyframes bounce-slow {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-bounce-slow {
+  animation: bounce-slow 2s ease-in-out infinite;
+}
+
+/* Smooth scrollbar for chat */
+.overflow-y-auto::-webkit-scrollbar {
+  width: 6px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #3b82f6, #9333ea);
+  border-radius: 10px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #2563eb, #7c3aed);
+}
+
+/* Enhanced shadow for chat widget */
+.shadow-3xl {
+  box-shadow: 0 35px 60px -15px rgba(0, 0, 0, 0.4);
+}
+

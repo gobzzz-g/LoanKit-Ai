@@ -4,6 +4,7 @@ import Signup from './components/Signup';
 import LandingPage from './components/LandingPage';
 import Dashboard from './components/Dashboard';
 import ChatInterface from './components/ChatInterface';
+import SupportChatBot from './components/SupportChatBot';
 import './App.css';
 
 function App() {
@@ -188,56 +189,65 @@ function App() {
   // Login page
   if (authState === 'login') {
     return (
-      <Login
-        onLoginSuccess={handleLoginSuccess}
-        onSwitchToSignup={() => setAuthState('signup')}
-      />
+      <>
+        <Login
+          onLoginSuccess={handleLoginSuccess}
+          onSwitchToSignup={() => setAuthState('signup')}
+        />
+        <SupportChatBot />
+      </>
     );
   }
 
   // Signup page
   if (authState === 'signup') {
     return (
-      <Signup
-        onSignupSuccess={handleSignupSuccess}
-        onSwitchToLogin={() => setAuthState('login')}
-      />
+      <>
+        <Signup
+          onSignupSuccess={handleSignupSuccess}
+          onSwitchToLogin={() => setAuthState('login')}
+        />
+        <SupportChatBot />
+      </>
     );
   }
 
   // Authenticated - Show Landing, Dashboard, or Chat
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-blue-50">
-      {currentView === 'landing' && (
-        <LandingPage 
-          onStartSession={handleStartSession}
-          onGoToDashboard={handleGoToDashboard}
-          user={user}
-          onLogout={handleLogout}
-        />
-      )}
-      
-      {currentView === 'dashboard' && (
-        <Dashboard
-          key={`dashboard-${user?.loanHistory?.length || 0}`}
-          user={user}
-          onStartNewApplication={handleStartSession}
-          onBack={handleBackFromDashboard}
-          onViewLoan={(loan) => console.log('View loan:', loan)}
-          onUserUpdate={handleUserUpdate}
-        />
-      )}
-      
-      {currentView === 'chat' && (
-        <ChatInterface 
-          sessionData={sessionData} 
-          onBack={handleBackToLanding}
-          user={user}
-          sessionToken={sessionToken}
-          onLoanDecision={handleLoanDecision}
-        />
-      )}
-    </div>
+    <>
+      <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-blue-50">
+        {currentView === 'landing' && (
+          <LandingPage 
+            onStartSession={handleStartSession}
+            onGoToDashboard={handleGoToDashboard}
+            user={user}
+            onLogout={handleLogout}
+          />
+        )}
+        
+        {currentView === 'dashboard' && (
+          <Dashboard
+            key={`dashboard-${user?.loanHistory?.length || 0}`}
+            user={user}
+            onStartNewApplication={handleStartSession}
+            onBack={handleBackFromDashboard}
+            onViewLoan={(loan) => console.log('View loan:', loan)}
+            onUserUpdate={handleUserUpdate}
+          />
+        )}
+        
+        {currentView === 'chat' && (
+          <ChatInterface 
+            sessionData={sessionData} 
+            onBack={handleBackToLanding}
+            user={user}
+            sessionToken={sessionToken}
+            onLoanDecision={handleLoanDecision}
+          />
+        )}
+      </div>
+      <SupportChatBot />
+    </>
   );
 }
 

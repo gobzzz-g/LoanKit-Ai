@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { MessageCircle, X, Send, Bot, Minimize2 } from 'lucide-react';
+import { MessageCircle, X, Send, Bot, Minimize2, Maximize2 } from 'lucide-react';
 
 const SupportChatBot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -137,6 +137,11 @@ const SupportChatBot = () => {
     setIsMinimized(true);
   };
 
+  const maximizeChat = (e) => {
+    e.stopPropagation();
+    setIsMinimized(false);
+  };
+
   const closeChat = (e) => {
     e.stopPropagation();
     setIsOpen(false);
@@ -191,6 +196,15 @@ const SupportChatBot = () => {
                   aria-label="Minimize chat"
                 >
                   <Minimize2 className="w-5 h-5" />
+                </button>
+              )}
+              {isMinimized && (
+                <button
+                  onClick={maximizeChat}
+                  className="hover:bg-white/20 p-1 rounded transition"
+                  aria-label="Maximize chat"
+                >
+                  <Maximize2 className="w-5 h-5" />
                 </button>
               )}
               <button

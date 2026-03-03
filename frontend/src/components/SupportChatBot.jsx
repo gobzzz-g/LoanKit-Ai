@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { MessageCircle, X, Send, Bot, Minimize2, Maximize2 } from 'lucide-react';
+import { MessageCircle, X, Send, Bot, Minimize2, Maximize2, Mic, MicOff, Volume2, VolumeX } from 'lucide-react';
 
 const SupportChatBot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,8 +14,13 @@ const SupportChatBot = () => {
   ]);
   const [inputMessage, setInputMessage] = useState('');
   const [typing, setTyping] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [voiceEnabled, setVoiceEnabled] = useState(true);
   const messagesEndRef = useRef(null);
   const chatWidgetRef = useRef(null);
+  const recognitionRef = useRef(null);
+  const synthRef = useRef(window.speechSynthesis);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -24,6 +29,140 @@ const SupportChatBot = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages, typing]);
+
+  // Initialize Speech Recognition
+  useEffect(() => {
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      recognitionRef.current = new SpeechRecognition();
+      recognitionRef.current.continuous = false;
+      recognitionRef.current.interimResults = false;
+      recognitionRef.current.lang = 'en-US';
+
+      recognitionRef.current.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        setInputMessage(transcript);
+        setIsListening(false);
+        // Automatically send the message after speech recognition
+        setTimeout(() => handleSendMessage(transcript), 100);
+      };
+
+      recognitionRef.current.onerror = (event) => {
+        console.error('Speech recognition error:', event.error);
+        setIsListening(false);
+      };
+
+      recognitionRef.current.onend = () => {
+        setIsListening(false);
+      };
+    }
+
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
+      if (synthRef.current) {
+        synthRef.current.cancel();
+      }
+    };
+  }, []);
+
+  // Load voices for text-to-speech
+  useEffect(() => {
+    const loadVoices = () => {
+      synthRef.current.getVoices();
+    };
+    
+    if (synthRef.current) {
+      loadVoices();
+      synthRef.current.addEventListener('voiceschanged', loadVoices);
+    }
+
+    return () => {
+      if (synthRef.current) {
+        synthRef.current.removeEventListener('voiceschanged', loadVoices);
+      }
+    };
+  }, []);
+
+  // Text-to-Speech function with Siri-like voice
+  const speak = (text) => {
+    if (!voiceEnabled || !synthRef.current) return;
+
+    // Stop any ongoing speech
+    synthRef.current.cancel();
+
+    // Clean text for speech (remove emojis and special formatting)
+    const cleanText = text
+      .replace(/[📄📞📧💬💰📊⚡🎯🚀✅💵🏠🚗💼💚💛🧡❤️✨👋😊]/g, '')
+      .replace(/\n\n/g, '. ')
+      .replace(/\n/g, '. ');
+
+    const utterance = new SpeechSynthesisUtterance(cleanText);
+    
+    // Configure voice to sound like Siri (use first available female voice or default)
+    const voices = synthRef.current.getVoices();
+    // Try to find a good quality female voice (Samantha on Mac, Zira on Windows, or Google UK English Female)
+    const preferredVoice = voices.find(voice => 
+      voice.name.includes('Samantha') || 
+      voice.name.includes('Zira') ||
+      voice.name.includes('Google UK English Female') ||
+      voice.name.includes('Microsoft Zira') ||
+      (voice.lang.includes('en') && voice.name.includes('Female'))
+    ) || voices.find(voice => voice.lang.includes('en-US'));
+
+    if (preferredVoice) {
+      utterance.voice = preferredVoice;
+    }
+
+    utterance.rate = 1.1; // Slightly faster, like Siri
+    utterance.pitch = 1.0;
+    utterance.volume = 1.0;
+
+    utterance.onstart = () => setIsSpeaking(true);
+    utterance.onend = () => setIsSpeaking(false);
+    utterance.onerror = () => setIsSpeaking(false);
+
+    synthRef.current.speak(utterance);
+  };
+
+  // Start voice recognition
+  const startListening = () => {
+    if (recognitionRef.current && !isListening) {
+      try {
+        recognitionRef.current.start();
+        setIsListening(true);
+      } catch (error) {
+        console.error('Error starting speech recognition:', error);
+      }
+    }
+  };
+
+  // Stop voice recognition
+  const stopListening = () => {
+    if (recognitionRef.current && isListening) {
+      recognitionRef.current.stop();
+      setIsListening(false);
+    }
+  };
+
+  // Toggle voice input
+  const toggleVoiceInput = () => {
+    if (isListening) {
+      stopListening();
+    } else {
+      startListening();
+    }
+  };
+
+  // Toggle voice output
+  const toggleVoiceOutput = () => {
+    setVoiceEnabled(!voiceEnabled);
+    if (isSpeaking) {
+      synthRef.current.cancel();
+      setIsSpeaking(false);
+    }
+  };
 
   // Quick response templates
   const quickResponses = [
@@ -120,6 +259,11 @@ const SupportChatBot = () => {
       };
       setMessages(prev => [...prev, botMsg]);
       setTyping(false);
+      
+      // Speak the response if voice is enabled
+      if (voiceEnabled) {
+        speak(botResponse);
+      }
     }, 800);
   };
 
@@ -190,13 +334,23 @@ const SupportChatBot = () => {
             </div>
             <div className="flex items-center gap-2">
               {!isMinimized && (
-                <button
-                  onClick={minimizeChat}
-                  className="hover:bg-white/20 p-1 rounded transition"
-                  aria-label="Minimize chat"
-                >
-                  <Minimize2 className="w-5 h-5" />
-                </button>
+                <>
+                  <button
+                    onClick={toggleVoiceOutput}
+                    className={`hover:bg-white/20 p-1 rounded transition ${isSpeaking ? 'animate-pulse' : ''}`}
+                    aria-label={voiceEnabled ? "Disable voice" : "Enable voice"}
+                    title={voiceEnabled ? "Voice On" : "Voice Off"}
+                  >
+                    {voiceEnabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
+                  </button>
+                  <button
+                    onClick={minimizeChat}
+                    className="hover:bg-white/20 p-1 rounded transition"
+                    aria-label="Minimize chat"
+                  >
+                    <Minimize2 className="w-5 h-5" />
+                  </button>
+                </>
               )}
               {isMinimized && (
                 <button
@@ -288,12 +442,26 @@ const SupportChatBot = () => {
                     type="text"
                     value={inputMessage}
                     onChange={(e) => setInputMessage(e.target.value)}
-                    placeholder="Type your message..."
+                    placeholder={isListening ? "Listening..." : "Type your message..."}
                     className="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                    disabled={isListening}
                   />
                   <button
+                    type="button"
+                    onClick={toggleVoiceInput}
+                    className={`${
+                      isListening 
+                        ? 'bg-red-500 animate-pulse' 
+                        : 'bg-gradient-to-r from-green-500 to-emerald-600'
+                    } text-white p-2 rounded-full hover:shadow-lg transition-all duration-200`}
+                    aria-label={isListening ? "Stop listening" : "Start voice input"}
+                    title={isListening ? "Stop listening" : "Voice input"}
+                  >
+                    {isListening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
+                  </button>
+                  <button
                     type="submit"
-                    disabled={!inputMessage.trim()}
+                    disabled={!inputMessage.trim() || isListening}
                     className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-2 rounded-full hover:shadow-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                     aria-label="Send message"
                   >
@@ -301,7 +469,7 @@ const SupportChatBot = () => {
                   </button>
                 </form>
                 <p className="text-xs text-gray-400 text-center mt-2">
-                  We typically reply instantly
+                  {isListening ? '🎤 Listening... Speak now' : 'We typically reply instantly • Voice enabled'}
                 </p>
               </div>
             </>
